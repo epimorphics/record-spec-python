@@ -15,6 +15,9 @@ cli = [
     "click>=8.1",
 ]
 
+[project.scripts]
+record-spec = "record_spec.cli.main:main"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
