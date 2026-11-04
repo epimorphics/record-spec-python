@@ -1,0 +1,30 @@
+prefixes:
+  - prefix: u
+    uri: http://example.org/spec/upper/
+  - prefix: d
+    uri: http://example.org/def/upper/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+mixins:
+  u:WithDocumentation:
+    properties:
+      label:
+        propertyUri: d:label
+        kind: literal
+        required: false
+        repeatable: true
+        constraints:
+          - datatype: xsd:string
+
+records:
+  u:Base:
+    shortCode: Base
+    classUri: d:Base
+    properties:
+      foo:
+        propertyUri: d:foo
+        kind: literal
+        required: true
+        repeatable: false
+        constraints:
+          - datatype: xsd:string

@@ -1,0 +1,63 @@
+base: http://example.org/spec/literalProperties.ttl
+prefixes:
+  - prefix: ex
+    uri: http://example.org/def/
+  - prefix: spec
+    uri: http://example.org/spec/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+records:
+  spec:Foo:
+    classUri: ex:Foo
+    shortCode: Foo
+    properties:
+      string:
+        kind: literal
+        propertyUri: ex:string
+        required: true
+        repeatable: true
+        constraints:
+          - datatype: xsd:string
+            pattern: f(o)*
+      integer:
+        kind: literal
+        propertyUri: ex:integer
+        required: false
+        repeatable: true
+        constraints:
+          - datatype: xsd:integer
+            minInclusive: "0"
+            maxInclusive: "10"
+      decimal:
+        kind: literal
+        propertyUri: ex:decimal
+        required: true
+        repeatable: false
+        constraints:
+          - datatype: xsd:decimal
+            minExclusive: "1.0"
+            maxExclusive: "100.0"
+      union:
+        kind: literal
+        propertyUri: ex:union
+        required: false
+        repeatable: false
+        constraints:
+          - datatype: xsd:date
+          - datatype: xsd:dateTime
+      enum:
+        kind: literal
+        propertyUri: ex:enum
+        required: false
+        repeatable: false
+        constraints:
+          - datatype: xsd:string
+            in:
+              - RED
+              - GREEN
+              - BLUE
+      open:
+        kind: literal
+        propertyUri: ex:open
+        required: false
+        repeatable: false

@@ -1,0 +1,90 @@
+@prefix ex: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+spec:schema a rec:Schema ;
+    rec:record spec:Foo, spec:Bar, spec:Baz ;
+    rec:mixin spec:MixinA ;
+    rec:prefixMapping
+        [ rec:prefix "ex"; rec:uri "http://example.org/def/"],
+        [ rec:prefix "spec"; rec:uri "http://example.org/spec/" ],
+        [ rec:prefix "xsd"; rec:uri "http://www.w3.org/2001/XMLSchema#"]
+    ;
+.
+
+spec:MixinA a rec:Mixin ;
+    rec:property [
+        a rec:LiteralProperty ;
+        rec:shortCode "identifier" ;
+        rec:uri ex:identifier ;
+        rec:required true ;
+        rec:constraint [
+            a rec:LiteralConstraint ;
+            rec:datatype xsd:string ;
+        ] ;
+    ] ;
+.
+
+spec:Foo a rec:Record ;
+    rec:uri ex:Foo ;
+    rec:shortCode "Foo" ;
+    rec:implements spec:MixinA ;
+.
+
+spec:Bar a rec:Record ;
+    rec:uri ex:Bar ;
+    rec:shortCode "Bar" ;
+    rec:property [
+        a rec:LiteralProperty ;
+        rec:shortCode "notation" ;
+        rec:uri ex:notation ;
+        rec:required true ;
+        rec:constraint [
+            a rec:LiteralConstraint ;
+            rec:datatype xsd:string ;
+        ] ;
+    ], [
+        a rec:LiteralProperty ;
+        rec:shortCode "label" ;
+        rec:uri ex:label ;
+        rec:repeatable true ;
+        rec:constraint [
+            a rec:LiteralConstraint ;
+            rec:datatype xsd:string ;
+        ] ;
+    ] ;
+.
+
+spec:Baz a rec:Record ;
+    rec:uri ex:Baz ;
+    rec:shortCode "Baz" ;
+    rec:property [
+        a rec:RecordProperty ;
+        rec:shortCode "fooMap" ;
+        rec:uri ex:fooMap ;
+        rec:nested true ;
+        rec:repeatable true ;
+        rec:propertyMap [
+            rec:keyProperty "identifier" ;
+        ] ;
+        rec:constraint [
+            a rec:RecordConstraint ;
+            rec:record spec:Foo ;
+        ] ;
+    ], [
+        a rec:RecordProperty ;
+        rec:shortCode "barMap" ;
+        rec:uri ex:barMap ;
+        rec:nested true ;
+        rec:repeatable true ;
+        rec:propertyMap [
+            rec:keyProperty "notation" ;
+        ] ;
+        rec:constraint [
+            a rec:RecordConstraint ;
+            rec:record spec:Bar ;
+        ] ;
+    ] ;
+.

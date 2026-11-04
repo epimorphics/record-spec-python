@@ -38,6 +38,7 @@ from record_spec.model import (
     Schema,
     SchemaBuilder,
 )
+from record_spec.rdf import RdfBuilder, RdfParser, RdfSerializer
 from record_spec.serde import (
     LangStringDef,
     LiteralConstraintDef,
@@ -110,4 +111,8 @@ __all__ = [
     # parsers
     "YamlParser",
     "JsonParser",
+    # rdf
+    "RdfParser",
+    "RdfBuilder",
+    "RdfSerializer",
 ]

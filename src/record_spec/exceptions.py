@@ -282,3 +282,17 @@ class RdfRecordWriterException(RecordSpecException):
 
     def __init__(self, message: str):
         super().__init__(message)
+
+
+class RdfParserException(RecordSpecException):
+    """Raised when parsing an RDF serialization of a schema fails."""
+
+    def __init__(self, message: str):
+        super().__init__(message)
+
+
+class RdfBuilderException(RecordSpecException):
+    """Raised when building an RDF model of a schema fails."""
+
+    def __init__(self, message: str):
+        super().__init__(message)

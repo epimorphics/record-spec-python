@@ -1,0 +1,72 @@
+base: http://example.org/spec/propertyMaps.ttl
+prefixes:
+  - prefix: ex
+    uri: http://example.org/def/
+  - prefix: spec
+    uri: http://example.org/spec/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+
+records:
+  spec:Foo:
+    classUri: ex:Foo
+    shortCode: Foo
+    mixins:
+      - spec:MixinA
+
+  spec:Bar:
+    classUri: ex:Bar
+    shortCode: Bar
+    properties:
+      notation:
+        propertyUri: ex:notation
+        kind: literal
+        required: true
+        repeatable: false
+        constraints:
+          - datatype: xsd:string
+      label:
+        propertyUri: ex:label
+        kind: literal
+        required: false
+        repeatable: true
+        constraints:
+          - datatype: xsd:string
+
+  spec:Baz:
+    classUri: ex:Baz
+    shortCode: Baz
+    properties:
+      fooMap:
+        propertyUri: ex:fooMap
+        kind: object
+        nested: true
+        required: false
+        repeatable: true
+        reversed: false
+        map:
+          keyProperty: identifier
+        constraints:
+          - record: spec:Foo
+      barMap:
+        propertyUri: ex:barMap
+        kind: object
+        nested: true
+        required: false
+        repeatable: true
+        reversed: false
+        map:
+          keyProperty: notation
+        constraints:
+          - record: spec:Bar
+
+mixins:
+  spec:MixinA:
+    properties:
+      identifier:
+        propertyUri: ex:identifier
+        required: true
+        repeatable: false
+        kind: literal
+        constraints:
+          - datatype: xsd:string

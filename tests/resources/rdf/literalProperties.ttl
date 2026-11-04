@@ -1,0 +1,83 @@
+@prefix ex: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+spec:schema a rec:Schema ;
+    rec:record spec:Foo ;
+    rec:prefixMapping
+        [ rec:prefix "ex"; rec:uri "http://example.org/def/"],
+        [ rec:prefix "spec"; rec:uri "http://example.org/spec/" ],
+        [ rec:prefix "xsd"; rec:uri "http://www.w3.org/2001/XMLSchema#"]
+    ;
+.
+
+spec:Foo a rec:Record ;
+  rec:uri ex:Foo ;
+  rec:shortCode "Foo" ;
+  rec:property [
+      a rec:LiteralProperty ;
+      rec:uri ex:string ;
+      rec:shortCode "string" ;
+      rec:required true ;
+      rec:repeatable true ;
+      rec:constraint [
+        a rec:LiteralConstraint ;
+        rec:datatype xsd:string ;
+        rec:pattern "f(o)*" ;
+      ] ;
+  ] ;
+  rec:property [
+    a rec:LiteralProperty ;
+    rec:uri ex:integer ;
+    rec:shortCode "integer" ;
+    rec:required false ;
+    rec:repeatable true ;
+    rec:constraint [
+      a rec:LiteralConstraint ;
+      rec:datatype xsd:integer ;
+      rec:minInclusive "0"^^xsd:integer;
+      rec:maxInclusive "10"^^xsd:integer;
+    ] ;
+  ] ;
+  rec:property [
+    a rec:LiteralProperty;
+    rec:uri ex:decimal ;
+    rec:shortCode "decimal";
+    rec:required true ;
+    rec:constraint [
+      a rec:LiteralConstraint ;
+      rec:datatype xsd:decimal ;
+      rec:minExclusive "1.0"^^xsd:decimal ;
+      rec:maxExclusive "100.0"^^xsd:decimal ;
+    ] ;
+  ] ;
+  rec:property [
+    a rec:LiteralProperty ;
+    rec:uri ex:union ;
+    rec:shortCode "union" ;
+    rec:constraint [
+      a rec:LiteralConstraint ;
+      rec:datatype xsd:date ;
+    ] ;
+    rec:constraint [
+      a rec:LiteralConstraint ;
+      rec:datatype xsd:dateTime ;
+    ] ;
+  ] ;
+  rec:property [
+    a rec:LiteralProperty ;
+    rec:uri ex:enum ;
+    rec:shortCode "enum" ;
+    rec:constraint [
+      a rec:LiteralConstraint ;
+      rec:datatype xsd:string ;
+      rec:in "RED", "GREEN", "BLUE"
+    ] ;
+  ] ;
+  rec:property [
+    a rec:LiteralProperty ;
+    rec:uri ex:open ;
+    rec:shortCode "open" ;
+  ]
+.

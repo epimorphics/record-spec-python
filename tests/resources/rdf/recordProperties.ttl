@@ -1,0 +1,67 @@
+@prefix ex: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+spec:schema a rec:Schema ;
+  rec:record spec:Foo ;
+    rec:prefixMapping
+        [ rec:prefix "ex"; rec:uri "http://example.org/def/"],
+        [ rec:prefix "spec"; rec:uri "http://example.org/spec/" ],
+        [ rec:prefix "xsd"; rec:uri "http://www.w3.org/2001/XMLSchema#"]
+    ;
+.
+
+spec:Foo a rec:Record ;
+  rec:uri ex:Foo ;
+  rec:shortCode "Foo" ;
+  rec:property [
+    a rec:RecordProperty ;
+    rec:shortCode "simpleRef" ;
+    rec:uri ex:simpleRef ;
+    rec:required true ;
+    rec:repeatable true ;
+    rec:constraint [
+      rec:record spec:Foo ;
+    ] ;
+  ], [
+    a rec:RecordProperty ;
+    rec:shortCode "reversedRef" ;
+    rec:uri ex:reversedRef ;
+    rec:required true ;
+    rec:repeatable true ;
+    rec:reversed true ;
+    rec:constraint [
+      rec:record spec:Foo ;
+    ] ;
+  ], [
+    a rec:RecordProperty ;
+    rec:shortCode "simpleNest" ;
+    rec:uri ex:simpleNest ;
+    rec:nested true ;
+    rec:constraint [
+      rec:record spec:Foo ;
+    ] ;
+  ], [
+    a rec:RecordProperty ;
+    rec:shortCode "reversedNest" ;
+    rec:uri ex:reversedNest ;
+    rec:nested true ;
+    rec:reversed true ;
+    rec:constraint [
+      rec:record spec:Foo ;
+    ] ;
+  ], [
+    a rec:RecordProperty ;
+    rec:shortCode "enum" ;
+    rec:uri ex:enum ;
+    rec:constraint [
+        rec:record spec:Foo ;
+        rec:in <http://example.org/id/foo/A>, <http://example.org/id/foo/B>, <http://example.org/id/foo/C> ;
+    ] ;
+  ], [
+    a rec:RecordProperty ;
+    rec:shortCode "open" ;
+    rec:uri ex:open ;
+  ]
+.

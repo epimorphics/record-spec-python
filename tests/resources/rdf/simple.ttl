@@ -1,0 +1,18 @@
+@prefix ex: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+
+spec:schema a rec:Schema ;
+    rec:identifier <http://example.org/spec/simple> ;
+    rec:record spec:Foo ;
+    rec:prefixMapping
+        [ rec:prefix "ex"; rec:uri "http://example.org/def/"],
+        [ rec:prefix "spec"; rec:uri "http://example.org/spec/" ],
+        [ rec:prefix "xsd"; rec:uri "http://www.w3.org/2001/XMLSchema#"]
+    ;
+.
+
+spec:Foo a rec:Record ;
+  rec:uri ex:Foo ;
+  rec:shortCode "Foo" ;
+ .

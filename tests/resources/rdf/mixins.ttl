@@ -1,0 +1,60 @@
+@prefix ex: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+spec:schema a rec:Schema ;
+    rec:record spec:Foo, spec:Bar ;
+    rec:mixin spec:MixinA, spec:MixinB ;
+    rec:prefixMapping
+        [ rec:prefix "ex"; rec:uri "http://example.org/def/"],
+        [ rec:prefix "spec"; rec:uri "http://example.org/spec/" ],
+        [ rec:prefix "xsd"; rec:uri "http://www.w3.org/2001/XMLSchema#"]
+    ;
+.
+
+spec:Foo a rec:Record ;
+  rec:uri ex:Foo ;
+  rec:implements spec:MixinA ;
+  rec:shortCode "Foo" ;
+.
+
+spec:MixinA a rec:Mixin ;
+  rec:property [
+    a rec:LiteralProperty ;
+    rec:shortCode "label" ;
+    rec:uri ex:label ;
+    rec:required false ;
+    rec:repeatable true ;
+    rec:constraint [
+      rec:datatype xsd:string ;
+    ] ;
+  ], [
+    a rec:RecordProperty ;
+    rec:shortCode "isFooOf" ;
+    rec:uri ex:hasFoo ;
+    rec:required false ;
+    rec:repeatable true ;
+    rec:reversed true ;
+  ] ;
+.
+
+spec:MixinB a rec:Mixin ;
+  rec:property [
+    a rec:RecordProperty ;
+    rec:shortCode "hasFoo" ;
+    rec:uri ex:hasFoo ;
+    rec:required true ;
+    rec:repeatable false ;
+    rec:constraint [
+      rec:record spec:Foo ;
+    ] ;
+  ] ;
+.
+
+spec:Bar a rec:Record ;
+  rec:uri ex:Bar ;
+  rec:implements spec:MixinA, spec:MixinB ;
+  rec:shortCode "Bar" ;
+.

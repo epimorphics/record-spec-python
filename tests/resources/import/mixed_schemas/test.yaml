@@ -1,0 +1,17 @@
+imports: [ "upper.yaml" ]
+prefixes:
+  - prefix: d
+    uri: http://example.org/spec/domain/
+  - prefix: u
+    uri: http://example.org/spec/upper/
+  - prefix: def
+    uri: http://example.org/def/domain/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+records:
+  d:Derived:
+    shortCode: Derived
+    classUri: def:Derived
+    extends: u:Base
+    mixins:
+      - u:WithDocumentation

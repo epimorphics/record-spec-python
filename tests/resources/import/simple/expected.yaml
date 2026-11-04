@@ -1,0 +1,31 @@
+prefixes:
+  - prefix: spec
+    uri: http://example.org/spec/
+  - prefix: def
+    uri: http://example.org/def/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+records:
+  spec:Base:
+    shortCode: Base
+    classUri: def:Base
+    properties:
+      label:
+        propertyUri: def:label
+        kind: literal
+        required: false
+        repeatable: true
+        constraints:
+          - datatype: xsd:string
+  spec:Derived:
+    extends: spec:Base
+    shortCode: Derived
+    classUri: def:Derived
+    properties:
+      description:
+        propertyUri: def:description
+        kind: literal
+        required: false
+        repeatable: true
+        constraints:
+          - datatype: xsd:string

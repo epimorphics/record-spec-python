@@ -4,12 +4,16 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import TYPE_CHECKING
 
 import yaml
 
 from record_spec.model import Schema, SchemaBuilder
 from record_spec.serde import SchemaDefBuilder
 from record_spec.yaml_parser import YamlParser
+
+if TYPE_CHECKING:
+    from rdflib import Graph
 
 RESOURCES = Path(__file__).parent / "resources"
 
@@ -55,6 +59,58 @@ def assert_yaml_serialisation(expected_resource: str, schema: Schema) -> None:
         f"actual: {json.dumps(actual, indent=2, sort_keys=True)}\n"
         f"expected: {json.dumps(expected, indent=2, sort_keys=True)}"
     )
+
+
+def resource_path(resource: str) -> Path:
+    return RESOURCES / resource.lstrip("/")
+
+
+def resource_uri(resource: str) -> str:
+    return (RESOURCES / resource.lstrip("/")).as_uri()
+
+
+def load_rdf(resource: str, format: str = "turtle") -> Graph:
+    """Load an RDF test resource into a graph."""
+    from rdflib import Graph
+
+    graph = Graph()
+    graph.parse(resource_path(resource), format=format)
+    return graph
+
+
+def assert_rdf_isomorphic(expected: Graph, actual: Graph) -> None:
+    """Assert that two RDF graphs are isomorphic (semantic comparison).
+
+    On failure, prints a triple-level diff: triples present in the expected
+    result but not the actual result, and vice versa (computed over
+    canonicalized graphs so that blank nodes are comparable), followed by
+    both graphs serialized as Turtle for context.
+    """
+    from rdflib.compare import graph_diff, isomorphic
+
+    if isomorphic(expected, actual):
+        return
+
+    # graph_diff canonicalizes both graphs (blank nodes get stable labels)
+    # so the reported differences are meaningful.
+    _, in_expected, in_actual = graph_diff(expected, actual)
+    missing = sorted(in_expected)
+    extra = sorted(in_actual)
+
+    message = "The generated RDF is not isomorphic with the expected RDF.\n"
+    message += "\nTriples in the EXPECTED result but NOT in the actual result:\n"
+    if not missing:
+        message += "  (none — differences involve blank node structure only)\n"
+    for triple in missing:
+        message += f"  - {triple}\n"
+    message += "\nTriples in the ACTUAL result but NOT in the expected result:\n"
+    if not extra:
+        message += "  (none — differences involve blank node structure only)\n"
+    for triple in extra:
+        message += f"  - {triple}\n"
+    message += "\nActual:\n" + actual.serialize(format="turtle")
+    message += "\nExpected:\n" + expected.serialize(format="turtle")
+    raise AssertionError(message)
 
 
 class TestListener:

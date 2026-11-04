@@ -1,0 +1,69 @@
+base: http://example.org/spec/recordProperties.ttl
+prefixes:
+  - prefix: ex
+    uri: http://example.org/def/
+  - prefix: spec
+    uri: http://example.org/spec/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+records:
+  spec:Foo:
+    classUri: ex:Foo
+    shortCode: Foo
+    properties:
+      simpleRef:
+        kind: object
+        propertyUri: ex:simpleRef
+        required: true
+        repeatable: true
+        nested: false
+        reversed: false
+        constraints:
+          - record: spec:Foo
+      reversedRef:
+        kind: object
+        propertyUri: ex:reversedRef
+        required: true
+        repeatable: true
+        nested: false
+        reversed: true
+        constraints:
+          - record: spec:Foo
+      simpleNest:
+        kind: object
+        propertyUri: ex:simpleNest
+        required: false
+        repeatable: false
+        nested: true
+        reversed: false
+        constraints:
+          - record: spec:Foo
+      reversedNest:
+        kind: object
+        propertyUri: ex:reversedNest
+        required: false
+        repeatable: false
+        nested: true
+        reversed: true
+        constraints:
+          - record: spec:Foo
+      enum:
+        kind: object
+        propertyUri: ex:enum
+        required: false
+        repeatable: false
+        nested: false
+        reversed: false
+        constraints:
+          - record: spec:Foo
+            in:
+              - http://example.org/id/foo/A
+              - http://example.org/id/foo/B
+              - http://example.org/id/foo/C
+      open:
+        kind: object
+        propertyUri: ex:open
+        required: false
+        repeatable: false
+        nested: false
+        reversed: false

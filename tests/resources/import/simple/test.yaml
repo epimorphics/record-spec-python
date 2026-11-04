@@ -1,0 +1,21 @@
+prefixes:
+  - prefix: spec
+    uri: http://example.org/spec/
+  - prefix: def
+    uri: http://example.org/def/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+imports:
+  - base.yaml
+records:
+  spec:Derived:
+    shortCode: Derived
+    classUri: def:Derived
+    extends: spec:Base
+    properties:
+      description:
+        propertyUri: def:description
+        kind: literal
+        repeatable: true
+        constraints:
+          - datatype: xsd:string
