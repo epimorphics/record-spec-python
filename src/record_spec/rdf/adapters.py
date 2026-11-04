@@ -23,6 +23,7 @@ from record_spec.model.property import PropertyKind
 from record_spec.model.values import LangString, PrefixMapping
 from record_spec.values.curi_resolver import CuriResolver, CuriResolverImpl
 
+from .extensions_helper import ExtensionsHelper
 from .vocab import Vocab as V
 
 if TYPE_CHECKING:
@@ -111,25 +112,26 @@ class RdfDocumentableAdapter(RdfAdapterBase):
 class RdfExtensibleDocumentableAdapter(RdfDocumentableAdapter):
     """Documentable adapter that also exposes extension records.
 
-    NOTE: reading ``rec:extension`` resources requires the RDF record reader
-    (milestone M4); until then no extensions are surfaced. Tracked in
-    ``.scratch/record-spec-python-port/issues/01-review-kotlin-quirks.md``.
+    Extension resources (``rec:extension``) are read as JSON trees using
+    the combined extension schema; see :class:`ExtensionsHelper`.
     """
 
-    def __init__(self, graph: Graph, resource: Node):
+    def __init__(self, graph: Graph, resource: Node, extensions_helper: ExtensionsHelper | None = None):
         super().__init__(graph, resource)
+        self._extensions_helper = extensions_helper if extensions_helper is not None else ExtensionsHelper()
 
     @property
     def extensions(self) -> Iterable[dict[str, Any]]:
-        # TODO(M4): read rec:extension resources as extension trees.
-        return []
+        from record_spec.rdf.vocab import REC_EXTENSION
+
+        return self._extensions_helper.read_extensions(self.graph, self.resource, REC_EXTENSION)
 
 
 class RdfPropertyCollectionAdapter(RdfExtensibleDocumentableAdapter, MixinAdapter):
     """A mixin-like collection of properties (the Kotlin ``JenaPropertyCollectionAdapter``)."""
 
-    def __init__(self, graph: Graph, resource: Node):
-        super().__init__(graph, resource)
+    def __init__(self, graph: Graph, resource: Node, extensions_helper: ExtensionsHelper | None = None):
+        super().__init__(graph, resource, extensions_helper)
 
     @property
     def id(self) -> str:
@@ -138,7 +140,7 @@ class RdfPropertyCollectionAdapter(RdfExtensibleDocumentableAdapter, MixinAdapte
     @property
     def properties(self) -> Iterable[PropertyAdapter]:
         return [
-            RdfPropertyAdapter(self.graph, obj)
+            RdfPropertyAdapter(self.graph, obj, self._extensions_helper)
             for obj in self.graph.objects(self.resource, URIRef(V.rec_property))
             if not isinstance(obj, Literal)
         ]
@@ -171,6 +173,9 @@ class RdfRecordAdapter(RdfPropertyCollectionAdapter, RecordAdapter):
 
 class RdfPropertyAdapter(RdfExtensibleDocumentableAdapter, PropertyAdapter):
     """The RDF adapter for a property definition (the Kotlin ``JenaPropertyAdapter``)."""
+
+    def __init__(self, graph: Graph, resource: Node, extensions_helper: ExtensionsHelper | None = None):
+        super().__init__(graph, resource, extensions_helper)
 
     @property
     def short_code(self) -> str:
@@ -322,8 +327,14 @@ class RdfPropertyMappingAdapter(RdfAdapterBase, PropertyMappingAdapter):
 class RdfSchemaAdapter(RdfExtensibleDocumentableAdapter, SchemaAdapter, CuriResolver):
     """The RDF adapter for a complete schema (the Kotlin ``JenaSchemaAdapter``)."""
 
-    def __init__(self, graph: Graph, schema_resource: Node, base_uri: str | None = None):
-        super().__init__(graph, schema_resource)
+    def __init__(
+        self,
+        graph: Graph,
+        schema_resource: Node,
+        base_uri: str | None = None,
+        extensions_helper: ExtensionsHelper | None = None,
+    ):
+        super().__init__(graph, schema_resource, extensions_helper)
         self._base_uri = base_uri
         self._prefixes = [
             PrefixMapping(
@@ -362,7 +373,7 @@ class RdfSchemaAdapter(RdfExtensibleDocumentableAdapter, SchemaAdapter, CuriReso
     @property
     def mixins(self) -> Iterable[MixinAdapter]:
         return [
-            RdfMixinAdapter(self.graph, obj)
+            RdfMixinAdapter(self.graph, obj, self._extensions_helper)
             for obj in self.graph.objects(self.resource, URIRef(V.rec_mixin))
             if not isinstance(obj, Literal)
         ]
@@ -370,7 +381,7 @@ class RdfSchemaAdapter(RdfExtensibleDocumentableAdapter, SchemaAdapter, CuriReso
     @property
     def records(self) -> Iterable[RecordAdapter]:
         return [
-            RdfRecordAdapter(self.graph, obj)
+            RdfRecordAdapter(self.graph, obj, self._extensions_helper)
             for obj in self.graph.objects(self.resource, URIRef(V.rec_record_predicate))
             if not isinstance(obj, Literal)
         ]

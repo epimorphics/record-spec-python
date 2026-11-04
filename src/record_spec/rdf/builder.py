@@ -5,7 +5,7 @@ The rdflib-based equivalent of the Kotlin ``RdfBuilder``.
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 from rdflib import RDF, BNode, Graph, Literal, URIRef
 
@@ -18,6 +18,7 @@ from .vocab import (
     REC_CONSTRAINT,
     REC_DATATYPE,
     REC_EXTENDS,
+    REC_EXTENSION,
     REC_IDENTIFIER,
     REC_IMPLEMENTS,
     REC_IN,
@@ -94,9 +95,32 @@ class RdfBuilder:
             self._build_record(record_adapter, schema_resource, curi_resolver)
         for mixin_adapter in schema_adapter.mixins:
             self._build_mixin(mixin_adapter, schema_resource, curi_resolver)
-        # NOTE: extension records are not written to RDF until M4 provides
-        # the RDF record writer (the Kotlin build(ObjectNode) path uses
-        # RdfRecordWriter). Tracked in the quirks ticket.
+        for extension_data in schema_adapter.extensions:
+            self._build_extension(extension_data, schema_resource)
+
+    def _build_extension(self, extension_data: dict[str, Any], parent: Node) -> None:
+        """Write an extension record (``rec:extension``) into the graph.
+
+        Mirrors the Kotlin ``RdfBuilder.build(ObjectNode)``: the extension
+        type is read from the *``"type"``* key (as produced by
+        ``toTreeWithType``), the extension record definition is looked up in
+        the combined schema, and the extension tree is written via
+        :class:`RdfRecordWriter`.
+        """
+        extension_type = extension_data.get("type")
+        if not isinstance(extension_type, str):
+            return
+        from record_spec.extensions import get_combined_schema
+        from record_spec.jsonschema import JsonOptions
+
+        service_schema = get_combined_schema()
+        extension_record = next((r for r in service_schema.records if r.class_uri == extension_type), None)
+        if extension_record is None:
+            return
+        from .record_writer import RdfRecordWriter
+
+        extension_resource = RdfRecordWriter(self.graph, JsonOptions()).write_record(extension_data, extension_record)
+        self._add(parent, URIRef(REC_EXTENSION), extension_resource)
 
     def _build_prefix_mapping(self, prefix_mapping: PrefixMapping, schema: Node) -> None:
         mapping_resource = BNode()

@@ -1,0 +1,63 @@
+base: http://example.org/spec/
+prefixes:
+  - prefix: def
+    uri: http://example.org/def/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+  - prefix: rdf
+    uri: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+records:
+  Foo:
+    classUri: def:Foo
+    shortCode: Foo
+    properties:
+      stringProp:
+        propertyUri: def:stringProp
+        kind: literal
+        constraints:
+          - datatype: xsd:string
+      langStringProp:
+        propertyUri: def:langStringProp
+        kind: literal
+        constraints:
+          - datatype: rdf:langString
+      integerProp:
+        propertyUri: def:integerProp
+        kind: literal
+        constraints:
+          - datatype: xsd:integer
+      floatProp:
+        propertyUri: def:floatProp
+        kind: literal
+        constraints:
+          - datatype: xsd:float
+      doubleProp:
+        propertyUri: def:doubleProp
+        kind: literal
+        constraints:
+          - datatype: xsd:double
+      decimalProp:
+        propertyUri: def:decimalProp
+        kind: literal
+        constraints:
+          - datatype: xsd:decimal
+      booleanProp:
+        propertyUri: def:booleanProp
+        kind: literal
+        constraints:
+          - datatype: xsd:boolean
+  Bar:
+    classUri: def:Bar
+    shortCode: Bar
+    properties:
+      nestedFoo:
+        propertyUri: def:nestedFoo
+        kind: object
+        nested: true
+        constraints:
+          - record: Foo
+      referenceFoo:
+        propertyUri: def:referenceFoo
+        kind: object
+        constraints:
+          - record: Foo

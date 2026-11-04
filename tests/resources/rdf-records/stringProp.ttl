@@ -1,0 +1,3 @@
+<http://example.org/test> a <http://example.org/def/Foo> ;
+    <http://example.org/def/stringProp> "String Value" ;
+.

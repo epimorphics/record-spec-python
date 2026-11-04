@@ -1,0 +1,5 @@
+{
+  "@id": "http://example.org/test",
+  "@type": "http://example.org/def/Foo",
+  "langStringProp": {"@value": "String Value", "@language": "en"}
+}

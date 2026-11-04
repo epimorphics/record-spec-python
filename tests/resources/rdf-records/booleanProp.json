@@ -1,0 +1,5 @@
+{
+  "@id": "http://example.org/test",
+  "@type": "http://example.org/def/Foo",
+  "booleanProp": true
+}

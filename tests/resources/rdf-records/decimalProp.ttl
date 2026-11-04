@@ -1,0 +1,3 @@
+<http://example.org/test> a <http://example.org/def/Foo> ;
+    <http://example.org/def/decimalProp> "3210.01"^^<http://www.w3.org/2001/XMLSchema#decimal> ;
+.

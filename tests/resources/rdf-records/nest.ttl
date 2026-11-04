@@ -1,0 +1,7 @@
+<http://example.org/test> a <http://example.org/def/Bar> ;
+  <http://example.org/def/nestedFoo> <http://example.org/foo> ;
+.
+
+<http://example.org/foo> a <http://example.org/def/Foo> ;
+  <http://example.org/def/stringProp> "Foo" ;
+.

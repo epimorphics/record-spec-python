@@ -1,0 +1,8 @@
+{
+  "@id": "http://example.org/test",
+  "@type": "http://example.org/def/Foo",
+  "decimalProp": {
+    "@value": "3210.01",
+    "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+  }
+}

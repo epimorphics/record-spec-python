@@ -1,0 +1,3 @@
+<http://example.org/test> a <http://example.org/def/Foo> ;
+    <http://example.org/def/doubleProp> "3210.0"^^<http://www.w3.org/2001/XMLSchema#double> ;
+.

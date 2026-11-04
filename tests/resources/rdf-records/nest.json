@@ -1,0 +1,9 @@
+{
+  "@id": "http://example.org/test",
+  "@type": "http://example.org/def/Bar",
+  "nestedFoo": {
+    "@id": "http://example.org/foo",
+    "@type": "http://example.org/def/Foo",
+    "stringProp": "Foo"
+  }
+}

@@ -1,0 +1,5 @@
+{
+  "@id": "http://example.org/test",
+  "@type": "http://example.org/def/Bar",
+  "referenceFoo": {"@id": "http://example.org/foo" }
+}
