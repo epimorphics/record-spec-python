@@ -1,0 +1,20 @@
+base: http://example.org/spec/
+prefixes:
+  - prefix: ext
+    uri: http://epimorphics.com/record-spec/extension/
+  - prefix: def
+    uri: http://example.org/def/
+mixins:
+  Foo:
+    extensions:
+      - type: ext:simple
+        value: "Mixin Annotation"
+records:
+  Bar:
+    classUri: def:Bar
+    shortCode: Bar
+    mixins:
+      - Foo
+    extensions:
+      - type: ext:simple
+        value: "Record Annotation"

@@ -146,6 +146,8 @@ class RdfBuilder:
         for property_adapter in record_adapter.properties:
             property_resource = self._build_property(property_adapter, curi_resolver)
             self._add(record_resource, URIRef(REC_PROPERTY), property_resource)
+        for extension_data in record_adapter.extensions:
+            self._build_extension(extension_data, record_resource)
 
     def _build_mixin(self, mixin_adapter: MixinAdapter, schema: Node, curi_resolver: CuriResolver) -> None:
         mixin_resource = URIRef(mixin_adapter.id)
@@ -155,6 +157,8 @@ class RdfBuilder:
         for property_adapter in mixin_adapter.properties:
             property_resource = self._build_property(property_adapter, curi_resolver)
             self._add(mixin_resource, URIRef(REC_PROPERTY), property_resource)
+        for extension_data in mixin_adapter.extensions:
+            self._build_extension(extension_data, mixin_resource)
 
     def _build_property(self, property_adapter: PropertyAdapter, curi_resolver: CuriResolver) -> Node:
         property_resource = BNode()
@@ -186,6 +190,8 @@ class RdfBuilder:
                 URIRef(REC_PROPERTY_MAP),
                 self._build_property_map(property_adapter.property_map),
             )
+        for extension_data in property_adapter.extensions:
+            self._build_extension(extension_data, property_resource)
         return property_resource
 
     def _build_property_map(self, property_map_adapter: PropertyMappingAdapter) -> Node:

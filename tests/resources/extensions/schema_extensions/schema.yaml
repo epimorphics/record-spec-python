@@ -1,0 +1,3 @@
+extensions:
+  - type: http://epimorphics.com/record-spec/extension/simple
+    value: Hello World!

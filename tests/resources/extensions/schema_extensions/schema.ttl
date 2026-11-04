@@ -1,0 +1,9 @@
+@prefix ex: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+
+spec:schema a rec:Schema ;
+    rec:extension [
+    a <http://epimorphics.com/record-spec/extension/simple> ;
+        <http://epimorphics.com/record-spec/extension/value> "Hello World!" ;]
+.

@@ -1,0 +1,9 @@
+base: http://example.org/spec/
+prefixes:
+  - prefix: ext
+    uri: http://epimorphics.com/record-spec/extension/
+mixins:
+  Foo:
+    extensions:
+      - type: ext:simple
+        value: "Mixin Annotation"

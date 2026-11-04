@@ -112,7 +112,33 @@ def _service_providers() -> list[ExtensionServiceProvider]:
     for entry_point in entry_points(group=ENTRY_POINT_GROUP):
         provider = entry_point.load()
         providers.append(provider() if isinstance(provider, type) else provider)
-    return providers
+    return list(_EXTRA_PROVIDERS) + providers
+
+
+#: Additional providers registered programmatically (e.g. in tests, or by
+#: embedding applications), taking precedence over entry-point providers.
+_EXTRA_PROVIDERS: list[ExtensionServiceProvider] = []
+
+
+def register_provider(provider: ExtensionServiceProvider) -> None:
+    """Register an additional extension service provider.
+
+    Registered providers are consulted before entry-point providers.
+    Intended for tests and for embedding applications; deployments should
+    prefer entry points (the ``record_spec.extension_service_provider`` group).
+    """
+    _EXTRA_PROVIDERS.append(provider)
+
+
+def unregister_provider(provider: ExtensionServiceProvider) -> None:
+    """Remove a previously registered provider."""
+    if provider in _EXTRA_PROVIDERS:
+        _EXTRA_PROVIDERS.remove(provider)
+
+
+def clear_registered_providers() -> None:
+    """Remove all programmatically registered providers."""
+    _EXTRA_PROVIDERS.clear()
 
 
 def get_extension_service(extension_type: str) -> ExtensionService | None:

@@ -1,0 +1,23 @@
+base: http://example.org/spec/
+prefixes:
+  - prefix: ext
+    uri: http://epimorphics.com/record-spec/extension/
+  - prefix: def
+    uri: http://example.org/def/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+records:
+  Bar:
+    classUri: def:Bar
+    shortCode: Bar
+    properties:
+      label:
+        propertyUri: def:label
+        kind: literal
+        required: false
+        repeatable: false
+        constraints:
+          - datatype: xsd:string
+        extensions:
+          - type: ext:simple
+            value: "Property Annotation"

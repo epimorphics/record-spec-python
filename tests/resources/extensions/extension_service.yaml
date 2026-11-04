@@ -1,0 +1,21 @@
+base: http://epimorphics.com/record-spec/extension/spec/
+imports:
+  - http://vocab.epimorphics.com/record-spec/schema.yaml
+prefixes:
+  - prefix: def
+    uri: http://epimorphics.com/record-spec/extension/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+records:
+  Simple:
+    classUri: def:simple
+    shortCode: Simple
+    extends: http://vocab.epimorphics.com/record-spec/Extension
+    properties:
+      value:
+        propertyUri: def:value
+        required: false
+        repeatable: false
+        kind: literal
+        constraints:
+          - datatype: xsd:string
