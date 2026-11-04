@@ -1,0 +1,13 @@
+<http://example.org/id/foo/A> a <http://example.org/def/Foo> ;
+  <http://example.org/def/barIdMap> <http://example.org/id/bar/A>, <http://example.org/id/bar/B> ;
+.
+
+<http://example.org/id/bar/A> a <http://example.org/def/Bar> ;
+  <http://example.org/def/notation> "BAR A" ;
+  <http://example.org/def/label> "BAR A" ;
+.
+
+<http://example.org/id/bar/B> a <http://example.org/def/Bar> ;
+  <http://example.org/def/notation> "BAR B";
+  <http://example.org/def/label> "BAR B", "Barbie" ;
+.

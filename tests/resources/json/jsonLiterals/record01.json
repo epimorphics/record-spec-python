@@ -1,0 +1,16 @@
+{
+  "@id": "http://example.org/id/foo",
+  "@type": "http://example.org/def/Foo",
+  "stringProp": "stringValue",
+  "intProp": 42,
+  "integerProp": 21,
+  "floatProp": 3.141,
+  "doubleProp": 0.123,
+  "decimalProp": {
+    "@value": "9.99",
+    "@type": "http://www.w3.org/2001/XMLSchema#decimal"
+  },
+  "booleanProp": true,
+  "dateProp": "2000-01-01",
+  "dateTimeProp": "2000-01-01T01:01:01.01Z"
+}

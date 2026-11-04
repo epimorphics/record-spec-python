@@ -1,0 +1,10 @@
+@prefix ex: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+ex:Base a rdfs:Class .
+ex:Foo a rdfs:Class ;
+    rdfs:subClassOf ex:Base .
+ex:Bar a rdfs:Class ;
+    rdfs:subClassOf ex:Foo .

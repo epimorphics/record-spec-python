@@ -1,0 +1,41 @@
+@prefix def: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foo: <http://example.org/spec/Foo#> .
+@prefix bar: <http://example.org/spec/Bar#> .
+
+spec:Foo a sh:NodeShape ;
+    sh:targetClass def:Foo ;
+    sh:property foo:optionalStringProp-kind, foo:optionalStringProp-count, foo:optionalStringProp-value
+.
+foo:optionalStringProp-kind
+    sh:path def:optionalStringProp ;
+    sh:nodeKind sh:Literal ;
+.
+
+foo:optionalStringProp-count
+    sh:path def:optionalStringProp ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/optionalStringProp on target shape. Expected 0 or 1."@en ;
+.
+foo:optionalStringProp-value
+    sh:path def:optionalStringProp ;
+    sh:datatype xsd:string ;
+.
+
+spec:Bar a sh:NodeShape ;
+    sh:targetClass def:Bar ;
+    sh:property bar:requiredFooRef-kind, bar:requiredFooRef-count ;
+.
+bar:requiredFooRef-kind
+    sh:path def:requiredFooRef ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+.
+bar:requiredFooRef-count
+    sh:path def:requiredFooRef ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/requiredFooRef on target shape. Expected exactly 1."@en ;
+.

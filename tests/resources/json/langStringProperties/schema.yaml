@@ -1,0 +1,40 @@
+base: http://example.org/spec/simple
+prefixes:
+  - prefix: def
+    uri: http://example.org/def/
+  - prefix: spec
+    uri: http://example.org/spec/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+  - prefix: rdf
+    uri: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+records:
+  Foo:
+    classUri: def:Foo
+    shortCode: Foo
+    properties:
+      langString:
+        propertyUri: def:langString
+        kind: literal
+        constraints:
+          - datatype: rdf:langString
+      stringOrLangString:
+        propertyUri: def:stringOrLangString
+        kind: literal
+        constraints:
+          - datatype: xsd:string
+          - datatype: rdf:langString
+      langStringWithPattern:
+        propertyUri: def:langStringWithPattern
+        kind: literal
+        constraints:
+          - datatype: rdf:langString
+            pattern: "^foo+"
+      stringOrLangStringWithPattern:
+        propertyUri: def:stringOrLangStringWithPattern
+        kind: literal
+        constraints:
+          - datatype: rdf:langString
+            pattern: "^b(a)+r"
+          - datatype: xsd:string
+            pattern: "foo|bar"

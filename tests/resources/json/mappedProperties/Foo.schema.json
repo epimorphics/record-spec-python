@@ -1,0 +1,100 @@
+{
+  "$id": "http://example.org/spec/Foo",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/spec:Foo",
+  "definitions": {
+    "spec:Foo": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string",
+          "enum": ["http://example.org/def/Foo"]
+        },
+        "barNotationMap": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "@id": {
+                "type": "string"
+              },
+              "@type": {
+                "type": "string",
+                "enum": ["http://example.org/def/Bar"]
+              },
+              "label": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["@type"]
+          }
+        },
+        "barIdMap": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "@id": {
+                "type": "string"
+              },
+              "@type": {
+                "type": "string",
+                "enum": ["http://example.org/def/Bar"]
+              },
+              "notation": {
+                "type": "string"
+              },
+              "label": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": ["@type", "notation"]
+          }
+        }
+      },
+      "required": ["@type"]
+    },
+    "spec:Bar": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string",
+          "enum": ["http://example.org/def/Bar"]
+        },
+        "notation": {
+          "type": "string"
+        },
+        "label": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": ["@type", "notation"]
+    },
+    "_ref": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "@id"
+      ]
+    }
+  }
+}

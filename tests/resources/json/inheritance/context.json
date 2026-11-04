@@ -1,0 +1,79 @@
+{
+  "@version": 1.1,
+  "http://example.org/def/Base": {
+    "@context": {
+      "identifier": {
+        "@id": "http://example.org/def/identifier",
+        "@type": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      "label": {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#label",
+        "@type": "http://www.w3.org/2001/XMLSchema#string",
+        "@container": "@set"
+      },
+      "age": {
+        "@id": "http://example.org/def/age",
+        "@type": "http://www.w3.org/2001/XMLSchema#integer"
+      },
+      "replaces": {
+        "@id": "http://example.org/def/replaces"
+      }
+    }
+  },
+  "http://example.org/def/DerivedA": {
+    "@context": {
+      "identifier": {
+        "@id": "http://example.org/def/identifier",
+        "@type": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      "label": {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#label",
+        "@type": "http://www.w3.org/2001/XMLSchema#string",
+        "@container": "@set"
+      },
+      "age": {
+        "@id": "http://example.org/def/age",
+        "@type": "http://www.w3.org/2001/XMLSchema#integer"
+      },
+      "replaces": {
+        "@id": "http://example.org/def/replaces"
+      }
+    }
+  },
+  "http://example.org/def/DerivedB": {
+    "@context": {
+      "identifier": {
+        "@id": "http://example.org/def/identifier",
+        "@type": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      "label": {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#label",
+        "@type": "http://www.w3.org/2001/XMLSchema#string",
+        "@container": "@set"
+      },
+      "age": {
+        "@id": "http://example.org/def/age",
+        "@type": "http://www.w3.org/2001/XMLSchema#integer"
+      },
+      "replaces": {
+        "@id": "http://example.org/def/replaces"
+      }
+    }
+  },
+  "http://example.org/def/UsesBase": {
+    "@context": {
+      "refToBase": {
+        "@id": "http://example.org/def/refToBase"
+      },
+      "nestBase": {
+        "@id": "http://example.org/def/nestBase",
+        "@type": "http://example.org/def/Base"
+      },
+      "mapOfBase": {
+        "@id": "http://example.org/def/mapOfBase",
+        "@container": "@index",
+        "@index": "http://example.org/def/identifier"
+      }
+    }
+  }
+}

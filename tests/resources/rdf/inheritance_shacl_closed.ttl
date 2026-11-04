@@ -1,0 +1,22 @@
+@prefix ex: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+
+spec:Foo a sh:NodeShape ;
+    sh:targetClass ex:Foo ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type )
+.
+spec:Base a sh:NodeShape ;
+    sh:targetClass ex:Base ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type )
+.
+spec:Bar a sh:NodeShape ;
+    sh:targetClass ex:Bar ;
+    sh:closed true ;
+    sh:ignoredProperties ( rdf:type )
+.

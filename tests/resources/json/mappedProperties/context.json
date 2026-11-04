@@ -1,0 +1,29 @@
+{
+  "@version": 1.1,
+  "http://example.org/def/Foo": {
+    "@context": {
+      "barNotationMap": {
+        "@id": "http://example.org/def/barNotationMap",
+        "@container": "@index",
+        "@index": "http://example.org/def/notation"
+      },
+      "barIdMap": {
+        "@id": "http://example.org/def/barIdMap",
+        "@container": "@id"
+      }
+    }
+  },
+  "http://example.org/def/Bar": {
+    "@context": {
+      "notation": {
+        "@id": "http://example.org/def/notation",
+        "@type": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      "label": {
+        "@id": "http://example.org/def/label",
+        "@type": "http://www.w3.org/2001/XMLSchema#string",
+        "@container": "@set"
+      }
+    }
+  }
+}

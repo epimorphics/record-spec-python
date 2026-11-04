@@ -1,0 +1,14 @@
+{
+  "@id": "http://example.org/id/foo",
+  "@type": "http://example.org/def/Foo",
+  "nestedBar": {
+    "@type": "http://example.org/def/Bar",
+    "nestedBaz": {
+      "@type": "http://example.org/def/Baz",
+      "label": "Baz",
+      "hasFoo": {
+        "@id": "http://example.org/id/foo"
+      }
+    }
+  }
+}

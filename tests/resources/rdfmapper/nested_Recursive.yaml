@@ -1,0 +1,20 @@
+namespaces:
+  ex: http://example.org/
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  xsd: http://www.w3.org/2001/XMLSchema#
+imports:
+  - record-mapper-core.yaml
+embedded:
+  - name: Nested.Recursive
+    requires:
+      "@type": "http://example.org/Recursive"
+    properties:
+      "@id": "<{@id}>"
+      "@type": "<{@type}>"
+      "<http://example.org/p1>": "{p1 | map_to('Nested.Recursive')}"
+resources:
+  - name: Recursive
+    properties:
+      "@id": "<{@id}>"
+      "@type": "<{@type}>"
+      "<http://example.org/p1>": "{p1 | map_to('Nested.Recursive')}"

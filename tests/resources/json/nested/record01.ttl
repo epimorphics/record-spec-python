@@ -1,0 +1,10 @@
+<http://example.org/id/foo> a <http://example.org/def/Foo> ;
+  <http://example.org/def/nestedBar> _:b0 ;
+.
+_:b0 a <http://example.org/def/Bar> ;
+  <http://example.org/def/nestedBaz> _:b1 ;
+.
+_:b1 a <http://example.org/def/Baz> ;
+  <http://example.org/def/label> "Baz" ;
+  <http://example.org/def/hasFoo> <http://example.org/id/foo> ;
+.

@@ -1,0 +1,71 @@
+@prefix def: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foo: <http://example.org/spec/Foo#> .
+@prefix bar: <http://example.org/spec/Bar#> .
+@prefix baz: <http://example.org/spec/Baz#> .
+
+spec:Foo a sh:NodeShape ;
+    sh:targetClass def:Foo ;
+    sh:property foo:nestedBar-kind, foo:nestedBar-count, foo:nestedBar-value ;
+.
+foo:nestedBar-kind
+    sh:path def:nestedBar ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+.
+foo:nestedBar-count
+    sh:path def:nestedBar ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/nestedBar on target shape. Expected 0 or 1."@en ;
+.
+foo:nestedBar-value
+    sh:path def:nestedBar ;
+    sh:shape spec:Bar ;
+.
+
+spec:Bar a sh:NodeShape ;
+    sh:targetClass def:Bar ;
+    sh:property bar:nestedBaz-kind, bar:nestedBaz-count, bar:nestedBaz-value ;
+.
+bar:nestedBaz-kind
+    sh:path def:nestedBaz ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+.
+bar:nestedBaz-count
+    sh:path def:nestedBaz ;
+    sh:message "Invalid count of http://example.org/def/nestedBaz on target shape. Expected 0 or 1."@en ;
+    sh:maxCount 1 ;
+.
+bar:nestedBaz-value
+    sh:path def:nestedBaz ;
+    sh:shape spec:Baz
+.
+
+spec:Baz a sh:NodeShape ;
+    sh:targetClass def:Baz ;
+    sh:property baz:label-kind, baz:label-count, baz:label-value, baz:hasFoo-kind, baz:hasFoo-count ;
+.
+baz:label-kind
+    sh:path def:label ;
+    sh:nodeKind sh:Literal ;
+.
+baz:label-count
+    sh:path def:label ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/label on target shape. Expected 0 or 1."@en ;
+.
+baz:label-value
+    sh:path def:label ;
+    sh:datatype xsd:string ;
+.
+baz:hasFoo-kind
+    sh:path def:hasFoo ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+.
+baz:hasFoo-count
+    sh:path def:hasFoo ;
+    sh:message "Invalid count of http://example.org/def/hasFoo on target shape. Expected 0 or 1."@en ;
+    sh:maxCount 1 ;
+.

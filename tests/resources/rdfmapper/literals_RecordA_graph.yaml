@@ -1,0 +1,35 @@
+namespaces:
+  ex: http://example.org/
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  xsd: http://www.w3.org/2001/XMLSchema#
+imports:
+  - record-mapper-core.yaml
+resources:
+  - name: RecordA
+    "@graph": "<{@id}/graph>"
+    properties:
+      "@id": "<{@id}>"
+      "@type": "<{@type}>"
+      "<http://example.org/p1>": "{p1 | smap_to('rdfLangString')}"
+      "<http://example.org/p2>":
+        - "{p2 | smap_to('rdfLangString')}"
+        - "{p2 | smap_to('typedLiteral')}"
+        - "{p2 | smap_to('plainLiteral')}"
+      "<http://example.org/p3>":
+        - "{p3 | smap_to('plainLiteral')}"
+        - "{p3 | expr('x if type(x) != dict else None')}"
+      "<http://example.org/p4>":
+        - "{p4 | smap_to('typedLiteral')}"
+        - "{p4 | asInt}"
+      "<http://example.org/p5>":
+        - "{p5 | smap_to('typedLiteral')}"
+        - "{p5 | asDecimal}"
+      "<http://example.org/p6>":
+        - "{p6 | smap_to('typedLiteral')}"
+        - "{p6 | asBoolean}"
+      "<http://example.org/p7>":
+        - "{p7 | smap_to('typedLiteral')}"
+        - "{p7 | asDateTime}"
+      "<http://example.org/p8>":
+        - "{p8 | smap_to('typedLiteral')}"
+        - "{p8 | asDate}"

@@ -1,0 +1,3 @@
+<http://example.org/id/foo> a <http://example.org/def/Foo> ;
+    <http://example.org/def/optionalStringProp> "Hello World" ;
+.

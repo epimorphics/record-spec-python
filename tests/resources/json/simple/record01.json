@@ -1,0 +1,5 @@
+{
+  "@type": "http://example.org/def/Foo",
+  "@id": "http://example.org/id/foo",
+  "optionalStringProp": "Hello World"
+}

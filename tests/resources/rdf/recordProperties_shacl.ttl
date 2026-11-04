@@ -1,0 +1,96 @@
+@prefix ex: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foo: <http://example.org/spec/Foo#> .
+
+spec:Foo a sh:NodeShape ;
+    sh:targetClass ex:Foo ;
+    sh:property foo:simpleRef-kind, foo:simpleRef-count, foo:reversedRef-kind, foo:reversedRef-count, foo:simpleNest-kind, foo:simpleNest-count, foo:simpleNest-value, foo:reversedNest-kind, foo:reversedNest-count, foo:reversedNest-value, foo:enum-kind, foo:enum-count, foo:enum-value, foo:open-kind, foo:open-count ;
+.
+
+foo:simpleRef-kind
+    sh:path ex:simpleRef ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+.
+
+foo:simpleRef-count
+    sh:path ex:simpleRef ;
+    sh:minCount 1 ;
+    sh:message "Invalid count of http://example.org/def/simpleRef on target shape. Expected 1 or more."@en;
+.
+
+foo:reversedRef-kind
+    sh:path [ sh:inversePath ex:reversedRef ] ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+.
+
+foo:reversedRef-count
+    sh:path [ sh:inversePath ex:reversedRef ] ;
+    sh:minCount 1 ;
+    sh:message "Invalid count of incoming http://example.org/def/reversedRef on target shape. Expected 1 or more."@en;
+.
+
+foo:simpleNest-kind
+    sh:path ex:simpleNest ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+.
+
+foo:simpleNest-count
+    sh:path ex:simpleNest ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/simpleNest on target shape. Expected 0 or 1."@en;
+.
+
+foo:simpleNest-value
+    sh:path ex:simpleNest ;
+    sh:shape spec:Foo ;
+.
+
+foo:reversedNest-kind
+    sh:path [ sh:inversePath ex:reversedNest ] ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+.
+
+foo:reversedNest-count
+    sh:path [ sh:inversePath ex:reversedNest ] ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of incoming http://example.org/def/reversedNest on target shape. Expected 0 or 1."@en;
+.
+
+foo:reversedNest-value
+    sh:path [ sh:inversePath ex:reversedNest ] ;
+    sh:shape spec:Foo ;
+.
+
+foo:enum-kind
+    sh:path ex:enum ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+.
+
+foo:enum-count
+    sh:path ex:enum ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/enum on target shape. Expected 0 or 1."@en ;
+.
+
+foo:enum-value
+    sh:path ex:enum ;
+    sh:in (
+        <http://example.org/id/foo/A>
+        <http://example.org/id/foo/B>
+        <http://example.org/id/foo/C>
+    ) ;
+.
+
+foo:open-kind
+    sh:path ex:open ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+.
+
+foo:open-count
+    sh:path ex:open ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/open on target shape. Expected 0 or 1."@en ;
+.

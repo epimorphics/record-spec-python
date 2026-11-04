@@ -1,0 +1,18 @@
+{
+  "@version": 1.1,
+  "http://example.org/def/Foo": {
+    "@context": {
+      "unmappedDatatype": {
+        "@id": "http://example.org/def/unmappedDatatype",
+        "@type": "http://example.org/def/myDatatype"
+      },
+      "multipleUnmappedDatatypes": {
+        "@id": "http://example.org/def/multipleUnmappedDatatypes"
+      },
+      "unmappedDatatypeWithPattern": {
+        "@id": "http://example.org/def/unmappedDatatypeWithPattern",
+        "@type": "http://example.org/def/myDatatype"
+      }
+    }
+  }
+}

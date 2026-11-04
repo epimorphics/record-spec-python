@@ -1,0 +1,50 @@
+{
+  "$id": "http://example.org/spec/Foo",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/spec:Foo",
+  "definitions": {
+    "_ref": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        }
+      },
+      "required": ["@id"]
+    },
+    "spec:Foo": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string",
+          "enum": ["http://example.org/def/Foo"]
+        },
+        "repeatableString": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "repeatableRef": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/_ref"
+          },
+          "minItems": 1
+        },
+        "repeatableNest": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/spec:Foo"
+          },
+          "minItems": 1
+        }
+      },
+      "required": [ "@type", "repeatableString", "repeatableRef", "repeatableNest" ]
+    }
+  }
+}

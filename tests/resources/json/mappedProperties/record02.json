@@ -1,0 +1,16 @@
+{
+  "@id": "http://example.org/id/foo/A",
+  "@type": "http://example.org/def/Foo",
+  "barIdMap": {
+    "http://example.org/id/bar/A": {
+      "@type": "http://example.org/def/Bar",
+      "notation": "BAR A",
+      "label": "BAR A"
+    },
+    "http://example.org/id/bar/B": {
+      "@type": "http://example.org/def/Bar",
+      "notation": "BAR B",
+      "label": [ "BAR B", "Barbie" ]
+    }
+  }
+}

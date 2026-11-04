@@ -1,0 +1,63 @@
+{
+  "$id": "simple_full.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/_root",
+  "definitions": {
+    "spec:Foo": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string",
+          "enum": ["http://example.org/def/Foo"]
+        },
+        "optionalStringProp": {
+          "type": "string"
+        }
+      },
+      "required": ["@type"]
+    },
+    "spec:Bar": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string",
+          "enum": [
+            "http://example.org/def/Bar"
+          ]
+        },
+        "requiredFooRef": {
+          "$ref": "#/definitions/_ref"
+        }
+      },
+      "required": [
+        "@type",
+        "requiredFooRef"
+      ]
+    },
+    "_ref": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        }
+      },
+      "required": ["@id"]
+    },
+    "_root": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/spec:Foo"
+        },
+        {
+          "$ref": "#/definitions/spec:Bar"
+        }
+      ]
+    }
+  }
+}

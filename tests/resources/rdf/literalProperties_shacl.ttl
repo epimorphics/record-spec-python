@@ -1,0 +1,129 @@
+@prefix ex: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foo: <http://example.org/spec/Foo#> .
+
+spec:Foo a sh:NodeShape ;
+    sh:targetClass ex:Foo ;
+    sh:property foo:string-kind,
+        foo:string-count,
+        foo:string-value,
+        foo:integer-kind,
+        foo:integer-value,
+        foo:decimal-kind,
+        foo:decimal-count,
+        foo:decimal-value,
+        foo:union-kind,
+        foo:union-count,
+        foo:union-value,
+        foo:enum-kind,
+        foo:enum-count,
+        foo:enum-value,
+        foo:open-kind,
+        foo:open-count;
+.
+
+foo:string-kind
+    sh:path ex:string ;
+    sh:nodeKind sh:Literal ;
+.
+
+foo:string-count
+    sh:path ex:string ;
+    sh:message "Invalid count of http://example.org/def/string on target shape. Expected 1 or more."@en ;
+    sh:minCount 1 ;
+.
+
+foo:string-value
+    sh:path ex:string ;
+    sh:datatype xsd:string ;
+    sh:pattern "f(o)*" ;
+.
+
+foo:integer-kind
+    sh:path ex:integer ;
+    sh:nodeKind sh:Literal ;
+.
+
+foo:integer-value
+    sh:path ex:integer ;
+    sh:datatype xsd:integer ;
+    sh:minInclusive 0 ;
+    sh:maxInclusive 10 ;
+.
+
+foo:decimal-kind
+    sh:path ex:decimal ;
+    sh:nodeKind sh:Literal ;
+.
+
+foo:decimal-count
+    sh:path ex:decimal ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/decimal on target shape. Expected exactly 1."@en ;
+.
+
+foo:decimal-value
+    sh:path ex:decimal ;
+    sh:datatype xsd:decimal ;
+    sh:minExclusive "1.0"^^xsd:decimal ;
+    sh:maxExclusive "100.0"^^xsd:decimal ;
+.
+
+foo:union-kind
+    sh:path ex:union ;
+    sh:nodeKind sh:Literal ;
+.
+
+foo:union-count
+    sh:path ex:union ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/union on target shape. Expected 0 or 1."@en ;
+.
+
+foo:union-value
+    sh:path ex:union ;
+    sh:or (
+        foo:union-value-0
+        foo:union-value-1
+    )
+.
+
+foo:union-value-0
+    sh:datatype xsd:date ;
+.
+
+foo:union-value-1
+    sh:datatype xsd:dateTime ;
+.
+
+foo:enum-kind
+    sh:path ex:enum ;
+    sh:nodeKind sh:Literal ;
+.
+
+foo:enum-count
+    sh:path ex:enum ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/enum on target shape. Expected 0 or 1."@en ;
+.
+
+foo:enum-value
+    sh:path ex:enum ;
+    sh:datatype xsd:string ;
+    sh:in ("RED" "GREEN" "BLUE" ) ;
+.
+
+foo:open-kind
+    sh:path ex:open ;
+    sh:nodeKind sh:Literal ;
+.
+
+foo:open-count
+    sh:path ex:open ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/open on target shape. Expected 0 or 1."@en ;
+.

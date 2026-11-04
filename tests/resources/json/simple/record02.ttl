@@ -1,0 +1,3 @@
+<http://example.org/id/bar> a <http://example.org/def/Bar> ;
+  <http://example.org/def/requiredFooRef> <http://example.org/id/foo> ;
+.

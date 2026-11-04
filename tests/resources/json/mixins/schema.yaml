@@ -1,0 +1,45 @@
+base: http://example.org/spec/mixins
+prefixes:
+  - prefix: def
+    uri: http://example.org/def/
+  - prefix: spec
+    uri: http://example.org/spec/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+  - prefix: rdf
+    uri: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  - prefix: rdfs
+    uri: http://www.w3.org/2000/01/rdf-schema#
+
+mixins:
+  WithLabel:
+    properties:
+      labels:
+        propertyUri: rdfs:label
+        kind: literal
+        repeatable: true
+        constraints:
+          - datatype: xsd:string
+  WithTags:
+    properties:
+      tags:
+        propertyUri: def:tag
+        kind: object
+records:
+  Foo:
+    classUri: def:Foo
+    shortCode: Foo
+    mixins:
+      - WithLabel
+    properties:
+      replaces:
+        propertyUri: def:replaces
+        kind: object
+        constraints:
+          - record: Foo
+  Bar:
+    classUri: def:Bar
+    shortCode: Bar
+    mixins:
+      - WithLabel
+      - WithTags

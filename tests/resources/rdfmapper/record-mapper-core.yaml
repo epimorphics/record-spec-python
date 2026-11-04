@@ -1,0 +1,26 @@
+globals:
+  $baseURI: http://epimorphics.net/
+  $datasetID: default
+
+embedded:
+  - name: rdfLangString
+    requires:
+      "@value":
+      "@language":
+    pattern: "{@value}@{@language}"
+  - name: typedLiteral
+    requires:
+      "@value":
+      "@type":
+    pattern: "{@value}^^<{@type}>"
+  - name: plainLiteral
+    requires:
+      "@value":
+    unless:
+      "@language":
+      "@type":
+    pattern: "{@value}"
+  - name: ref
+    requires:
+      "@id":
+    pattern: "<{@id}>"

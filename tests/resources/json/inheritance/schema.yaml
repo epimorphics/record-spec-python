@@ -1,0 +1,92 @@
+base: http://example.org/spec/inheritance
+prefixes:
+  - prefix: d
+    uri: http://example.org/def/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+  - prefix: rdfs
+    uri: http://www.w3.org/2000/01/rdf-schema#
+records:
+  Base:
+    classUri: d:Base
+    shortCode: Base
+    properties:
+      identifier:
+        propertyUri: d:identifier
+        kind: literal
+        required: true
+        constraints:
+          - datatype: xsd:string
+      label:
+        propertyUri: rdfs:label
+        kind: literal
+        constraints:
+          - datatype: xsd:string
+        required: true
+        repeatable: true
+      age:
+        propertyUri: d:age
+        kind: literal
+        constraints:
+          - datatype: xsd:integer
+        required: false
+        repeatable: false
+      replaces:
+        propertyUri: d:replaces
+        kind: object
+        constraints:
+          - record: Base
+        required: false
+        repeatable: false
+  DerivedA:
+    extends: Base
+    classUri: d:DerivedA
+    shortCode: DerivedA
+    properties:
+      age:
+        propertyUri: d:age
+        kind: literal
+        required: true
+        constraints:
+          - datatype: xsd:integer
+            minInclusive: 0
+            maxInclusive: 100
+      replaces:
+        propertyUri: d:replaces
+        kind: object
+        constraints:
+          - record: DerivedA
+  DerivedB:
+    extends: DerivedA
+    classUri: d:DerivedB
+    shortCode: DerivedB
+    properties:
+      replaces:
+        propertyUri: d:replaces
+        kind: object
+        constraints:
+          - record: DerivedB
+  UsesBase:
+    classUri: d:UsesBase
+    shortCode: UsesBase
+    properties:
+      refToBase:
+        propertyUri: d:refToBase
+        kind: object
+        constraints:
+          - record: Base
+      nestBase:
+        propertyUri: d:nestBase
+        kind: object
+        nested: true
+        constraints:
+          - record: Base
+      mapOfBase:
+        propertyUri: d:mapOfBase
+        kind: object
+        nested: true
+        repeatable: true
+        map:
+          keyProperty: identifier
+        constraints:
+          - record: Base

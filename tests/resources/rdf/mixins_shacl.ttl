@@ -1,0 +1,58 @@
+@prefix ex: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foo: <http://example.org/spec/Foo#> .
+@prefix bar: <http://example.org/spec/Bar#> .
+
+spec:Foo a sh:NodeShape ;
+    sh:targetClass ex:Foo ;
+    sh:property foo:label-kind, foo:label-value, foo:isFooOf-kind ;
+.
+
+foo:label-kind
+    sh:path ex:label ;
+    sh:nodeKind sh:Literal ;
+.
+
+foo:label-value
+    sh:path ex:label ;
+    sh:datatype xsd:string ;
+.
+
+foo:isFooOf-kind
+    sh:path [ sh:inversePath ex:hasFoo ] ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+.
+
+spec:Bar a sh:NodeShape ;
+    sh:targetClass ex:Bar ;
+    sh:property bar:label-kind, bar:label-value, bar:hasFoo-kind, bar:hasFoo-count, bar:isFooOf-kind ;
+.
+
+bar:label-kind
+        sh:path ex:label ;
+        sh:nodeKind sh:Literal ;
+.
+bar:label-value
+    sh:path ex:label ;
+    sh:datatype xsd:string ;
+.
+
+bar:hasFoo-kind
+    sh:path ex:hasFoo ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+.
+
+bar:hasFoo-count
+    sh:path ex:hasFoo ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/hasFoo on target shape. Expected exactly 1."@en ;
+.
+
+bar:isFooOf-kind
+    sh:path [ sh:inversePath ex:hasFoo ] ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+.

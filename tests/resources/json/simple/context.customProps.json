@@ -1,0 +1,20 @@
+{
+  "@version": 1.1,
+  "id": "@id",
+  "rdfType": "@type",
+  "http://example.org/def/Foo": {
+    "@context": {
+      "optionalStringProp": {
+        "@id": "http://example.org/def/optionalStringProp",
+        "@type": "http://www.w3.org/2001/XMLSchema#string"
+      }
+    }
+  },
+  "http://example.org/def/Bar": {
+    "@context": {
+      "requiredFooRef": {
+        "@id": "http://example.org/def/requiredFooRef"
+      }
+    }
+  }
+}

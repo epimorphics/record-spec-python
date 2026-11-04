@@ -78,6 +78,28 @@ def load_rdf(resource: str, format: str = "turtle") -> Graph:
     return graph
 
 
+def normalize_string_literals(graph: Graph) -> Graph:
+    """Return a copy of the graph in which ``xsd:string``-typed literals are
+    replaced by plain literals.
+
+    RDF 1.1 defines simple literals as identical to ``xsd:string``-typed
+    literals, but rdflib's graph comparison (isomorphism / graph_diff)
+    distinguishes them. Serializers differ in which form they emit
+    (Jena emits plain literals), so both sides are normalized before
+    comparing.
+    """
+    from rdflib import Graph as RdfLibGraph
+    from rdflib.namespace import XSD
+    from rdflib.term import Literal
+
+    normalized = RdfLibGraph()
+    for s, p, o in graph:
+        if isinstance(o, Literal) and o.datatype == XSD.string:
+            o = Literal(str(o))
+        normalized.add((s, p, o))
+    return normalized
+
+
 def assert_rdf_isomorphic(expected: Graph, actual: Graph) -> None:
     """Assert that two RDF graphs are isomorphic (semantic comparison).
 

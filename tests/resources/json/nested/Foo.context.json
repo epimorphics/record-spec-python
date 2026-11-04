@@ -1,0 +1,30 @@
+{
+  "@version": 1.1,
+  "http://example.org/def/Foo": {
+    "@context": {
+      "nestedBar": {
+        "@id": "http://example.org/def/nestedBar",
+        "@type": "http://example.org/def/Bar"
+      }
+    }
+  },
+  "http://example.org/def/Bar": {
+    "@context": {
+      "nestedBaz": {
+        "@id": "http://example.org/def/nestedBaz",
+        "@type": "http://example.org/def/Baz"
+      }
+    }
+  },
+  "http://example.org/def/Baz": {
+    "@context": {
+      "label": {
+        "@id": "http://example.org/def/label",
+        "@type": "http://www.w3.org/2001/XMLSchema#string"
+      },
+      "hasFoo": {
+        "@id": "http://example.org/def/hasFoo"
+      }
+    }
+  }
+}

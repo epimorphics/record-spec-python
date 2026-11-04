@@ -1,0 +1,35 @@
+base: http://example.org/spec/simple
+prefixes:
+  - prefix: def
+    uri: http://example.org/def/
+  - prefix: spec
+    uri: http://example.org/spec/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+  - prefix: rdf
+    uri: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+
+records:
+  Foo:
+    classUri: def:Foo
+    shortCode: Foo
+    properties:
+      repeatableString:
+        propertyUri: def:repeatableString
+        kind: literal
+        repeatable: true
+        constraints:
+          - datatype: xsd:string
+      repeatableRef:
+        propertyUri: def:repeatableRef
+        kind: object
+        repeatable: true
+        constraints:
+          - record: Foo
+      repeatableNest:
+        propertyUri: def:repeatableNest
+        kind: object
+        repeatable: true
+        nested: true
+        constraints:
+          - record: Foo

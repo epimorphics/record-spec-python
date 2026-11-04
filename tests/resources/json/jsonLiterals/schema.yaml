@@ -1,0 +1,60 @@
+base: http://example.org/spec/simple
+prefixes:
+  - prefix: def
+    uri: http://example.org/def/
+  - prefix: spec
+    uri: http://example.org/spec/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+  - prefix: rdf
+    uri: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+records:
+  Foo:
+    classUri: def:Foo
+    shortCode: Foo
+    properties:
+      stringProp:
+        propertyUri: def:stringProp
+        kind: literal
+        constraints:
+          - datatype: xsd:string
+      intProp:
+        propertyUri: def:intProp
+        kind: literal
+        constraints:
+          - datatype: xsd:int
+      integerProp:
+        propertyUri: def:integerProp
+        kind: literal
+        constraints:
+          - datatype: xsd:integer
+      floatProp:
+        propertyUri: def:floatProp
+        kind: literal
+        constraints:
+          - datatype: xsd:float
+      doubleProp:
+        propertyUri: def:doubleProp
+        kind: literal
+        constraints:
+          - datatype: xsd:double
+      decimalProp:
+        propertyUri: def:decimalProp
+        kind: literal
+        constraints:
+          - datatype: xsd:decimal
+      booleanProp:
+        propertyUri: def:booleanProp
+        kind: literal
+        constraints:
+          - datatype: xsd:boolean
+      dateProp:
+        propertyUri: def:dateProp
+        kind: literal
+        constraints:
+          - datatype: xsd:date
+      dateTimeProp:
+        propertyUri: def:dateTimeProp
+        kind: literal
+        constraints:
+          - datatype: xsd:dateTime

@@ -1,0 +1,7 @@
+@prefix ex: <http://example.org/def/> .
+@prefix spec: <http://example.org/spec/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+ex:Foo a rdfs:Class ;
+    rdfs:subClassOf spec:MixinA .
+ex:Bar a rdfs:Class ;
+    rdfs:subClassOf spec:MixinA, spec:MixinB .

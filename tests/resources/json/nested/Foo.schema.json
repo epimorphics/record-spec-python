@@ -1,0 +1,67 @@
+{
+  "$id": "http://example.org/spec/Foo",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/spec:Foo",
+  "definitions": {
+    "spec:Foo": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string",
+          "enum": ["http://example.org/def/Foo"]
+        },
+        "nestedBar": {
+          "$ref": "#/definitions/spec:Bar"
+        }
+      },
+      "required": ["@type"]
+    },
+    "spec:Bar": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string",
+          "enum": ["http://example.org/def/Bar"]
+        },
+        "nestedBaz": {
+          "$ref": "#/definitions/spec:Baz"
+        }
+      },
+      "required": ["@type"]
+    },
+    "spec:Baz": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string",
+          "enum": ["http://example.org/def/Baz"]
+        },
+        "label": {
+          "type": "string"
+        },
+        "hasFoo": {
+          "$ref": "#/definitions/_ref"
+        }
+      },
+      "required": ["@type"]
+    },
+    "_ref": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        }
+      },
+      "required": ["@id"]
+    }
+  }
+}

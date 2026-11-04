@@ -1,0 +1,32 @@
+{
+  "$id": "http://example.org/spec/Foo",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/spec:Foo",
+  "definitions": {
+    "spec:Foo": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string",
+          "enum": ["http://example.org/def/Foo"]
+        },
+        "optionalStringProp": {
+          "type": "string"
+        }
+      },
+      "required": ["@type"]
+    },
+    "_ref": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        }
+      },
+      "required": ["@id"]
+    }
+  }
+}

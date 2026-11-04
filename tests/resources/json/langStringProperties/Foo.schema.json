@@ -1,0 +1,156 @@
+{
+  "$id": "http://example.org/spec/Foo",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/spec:Foo",
+  "definitions": {
+    "spec:Foo": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string",
+          "enum": ["http://example.org/def/Foo"]
+        },
+        "langString": {
+          "type": "object",
+          "properties": {
+            "@value": {
+              "type": "string"
+            },
+            "@language": {
+              "type": "string"
+            },
+            "@type": {
+              "type": "string",
+              "enum": [
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+              ]
+            }
+          },
+          "required": ["@value", "@language"]
+        },
+        "stringOrLangString": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "@value": {
+                  "type": "string"
+                },
+                "@type": {
+                  "type": "string",
+                  "enum": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                  ]
+                }
+              },
+              "required": [
+                "@value"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "@value": {
+                  "type": "string"
+                },
+                "@language": {
+                  "type": "string"
+                },
+                "@type": {
+                  "type": "string",
+                  "enum": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                  ]
+                }
+              },
+              "required": [
+                "@value",
+                "@language"
+              ]
+            }
+          ]
+        },
+        "langStringWithPattern": {
+          "type": "object",
+          "properties": {
+            "@value": {
+              "type": "string",
+              "pattern": "^foo+"
+            },
+            "@language": {
+              "type": "string"
+            },
+            "@type": {
+              "type": "string",
+              "enum": [
+                "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+              ]
+            }
+          },
+          "required": ["@value", "@language"]
+        },
+        "stringOrLangStringWithPattern": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "@value": {
+                  "type": "string",
+                  "pattern": "^b(a)+r"
+                },
+                "@language": {
+                  "type": "string"
+                },
+                "@type": {
+                  "type": "string",
+                  "enum": [
+                    "http://www.w3.org/1999/02/22-rdf-syntax-ns#langString"
+                  ]
+                }
+              },
+              "required": [
+                "@value",
+                "@language"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "@value": {
+                  "type": "string",
+                  "pattern": "foo|bar"
+                },
+                "@type": {
+                  "type": "string",
+                  "enum": [
+                    "http://www.w3.org/2001/XMLSchema#string"
+                  ]
+                }
+              },
+              "required": [
+                "@value"
+              ]
+            }
+          ]
+        }
+      },
+      "required": [
+        "@type"
+      ]
+    },
+    "_ref": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "@id"
+      ]
+    }
+  }
+}

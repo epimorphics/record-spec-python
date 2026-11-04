@@ -1,0 +1,13 @@
+namespaces:
+  ex: http://example.org/
+  rdf: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  xsd: http://www.w3.org/2001/XMLSchema#
+imports:
+  - record-mapper-core.yaml
+resources:
+  - name: RecordA
+    properties:
+      "@id": "<{@id}>"
+      "@type": "<{@type}>"
+      "<http://example.org/p1>": "{p1 | smap_to('rdfLangString')}"
+      "<http://example.org/p2>": "{p2 | map_to('ref')}"

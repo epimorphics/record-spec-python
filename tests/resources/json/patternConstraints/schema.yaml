@@ -1,0 +1,36 @@
+base: http://example.org/spec/simple
+prefixes:
+  - prefix: def
+    uri: http://example.org/def/
+  - prefix: spec
+    uri: http://example.org/spec/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+  - prefix: rdf
+    uri: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+
+records:
+  Foo:
+    classUri: def:Foo
+    shortCode: Foo
+    properties:
+      stringPatternConstraint:
+        propertyUri: def:patternConstraint
+        kind: literal
+        constraints:
+          - datatype: xsd:string
+            pattern: "^foo+"
+      datePatternConstraint:
+        propertyUri: def:datePatternConstraint
+        kind: literal
+        constraints:
+          - datatype: xsd:date
+            pattern: "\\d{4}-\\d{2}-\\d{2}"
+      dateTimePatternConstraint:
+        propertyUri: def:dateTimePatternConstraint
+        kind: literal
+        constraints:
+          - datatype: xsd:dateTime
+            pattern: "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d+)Z"
+            # NOTE: range constraints are not preserved in JSON schema as range validation is only supported on numeric types
+            minInclusive: "2000-01-01T00:00:00Z"

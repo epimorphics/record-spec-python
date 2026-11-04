@@ -1,0 +1,142 @@
+{
+  "$id": "http://example.org/spec/Base",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/_root",
+  "definitions": {
+    "Base": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string",
+          "enum": [
+            "http://example.org/def/Base"
+          ]
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "label": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "age": {
+          "type": "integer"
+        },
+        "replaces": {
+          "$ref": "#/definitions/_ref"
+        }
+      },
+      "required": [
+        "@type",
+        "identifier",
+        "label"
+      ]
+    },
+    "DerivedA": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string",
+          "enum": [
+            "http://example.org/def/DerivedA"
+          ]
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "label": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "age": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "replaces": {
+          "$ref": "#/definitions/_ref"
+        }
+      },
+      "required": [
+        "@type",
+        "identifier",
+        "label",
+        "age"
+      ]
+    },
+    "DerivedB": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string",
+          "enum": [
+            "http://example.org/def/DerivedB"
+          ]
+        },
+        "identifier": {
+          "type": "string"
+        },
+        "label": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "age": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "replaces": {
+          "$ref": "#/definitions/_ref"
+        }
+      },
+      "required": [
+        "@type",
+        "identifier",
+        "label",
+        "age"
+      ]
+    },
+    "_ref": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "@id"
+      ]
+    },
+    "_root": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Base"
+        },
+        {
+          "$ref": "#/definitions/DerivedA"
+        },
+        {
+          "$ref": "#/definitions/DerivedB"
+        }
+      ]
+    }
+  }
+}

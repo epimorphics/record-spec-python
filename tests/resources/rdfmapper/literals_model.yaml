@@ -1,0 +1,63 @@
+base: http://example.org/spec/literals_model.ttl
+prefixes:
+  - prefix: ex
+    uri: http://example.org/
+  - prefix: rdf
+    uri: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+
+records:
+  RecordA:
+    classUri: ex:A
+    shortCode: RecordA
+    properties:
+      p1:
+        propertyUri: ex:p1
+        shortCode: p1
+        kind: literal
+        constraints:
+          - datatype: rdf:langString
+      p2:
+        propertyUri: ex:p2
+        shortCode: p2
+        kind: literal
+        constraints:
+          - datatype: xsd:string
+          - datatype: rdf:langString
+      p3:
+        propertyUri: ex:p3
+        shortCode: p3
+        kind: literal
+        constraints:
+          - datatype: xsd:string
+      p4:
+        propertyUri: ex:p4
+        shortCode: p4
+        kind: literal
+        constraints:
+          - datatype: xsd:integer
+      p5:
+        propertyUri: ex:p5
+        shortCode: p5
+        kind: literal
+        constraints:
+          - datatype: xsd:decimal
+      p6:
+        propertyUri: ex:p6
+        shortCode: p6
+        kind: literal
+        constraints:
+          - datatype: xsd:boolean
+      p7:
+        propertyUri: ex:p7
+        shortCode: p7
+        kind: literal
+        constraints:
+          - datatype: xsd:dateTime
+      p8:
+        propertyUri: ex:p8
+        shortCode: p8
+        kind: literal
+        constraints:
+          - datatype: xsd:date

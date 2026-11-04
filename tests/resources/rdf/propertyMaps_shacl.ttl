@@ -1,0 +1,87 @@
+@prefix ex: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foo: <http://example.org/spec/Foo#> .
+@prefix bar: <http://example.org/spec/Bar#> .
+@prefix baz: <http://example.org/spec/Baz#> .
+
+spec:Foo a sh:NodeShape ;
+    sh:targetClass ex:Foo ;
+    sh:property foo:identifier-kind, foo:identifier-count, foo:identifier-value ;
+.
+
+foo:identifier-kind
+    sh:path ex:identifier ;
+    sh:nodeKind sh:Literal ;
+.
+
+foo:identifier-count
+    sh:path ex:identifier ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/identifier on target shape. Expected exactly 1."@en ;
+.
+
+foo:identifier-value
+    sh:path ex:identifier ;
+    sh:datatype xsd:string ;
+.
+
+spec:Bar a sh:NodeShape ;
+    sh:targetClass ex:Bar ;
+    sh:property bar:notation-kind, bar:notation-count, bar:notation-value, bar:label-kind, bar:label-value ;
+.
+
+bar:notation-kind
+    sh:path ex:notation ;
+    sh:nodeKind sh:Literal ;
+.
+
+bar:notation-count
+    sh:path ex:notation ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/notation on target shape. Expected exactly 1."@en ;
+.
+
+bar:notation-value
+    sh:path ex:notation ;
+    sh:datatype xsd:string ;
+.
+
+bar:label-kind
+    sh:path ex:label ;
+    sh:nodeKind sh:Literal ;
+.
+
+bar:label-value
+    sh:path ex:label ;
+    sh:datatype xsd:string ;
+.
+
+spec:Baz a sh:NodeShape ;
+    sh:targetClass ex:Baz ;
+    sh:property baz:fooMap-kind, baz:fooMap-value, baz:barMap-kind, baz:barMap-value ;
+.
+
+baz:fooMap-kind
+    sh:path ex:fooMap ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+.
+
+baz:fooMap-value
+    sh:path ex:fooMap ;
+    sh:shape spec:Foo ;
+.
+
+baz:barMap-kind
+    sh:path ex:barMap ;
+    sh:nodeKind sh:BlankNodeOrIRI ;
+.
+
+baz:barMap-value
+    sh:path ex:barMap ;
+    sh:shape spec:Bar
+.

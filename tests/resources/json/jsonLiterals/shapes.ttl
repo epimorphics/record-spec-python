@@ -1,0 +1,140 @@
+@prefix def: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix foo: <http://example.org/spec/Foo#> .
+
+spec:Foo a sh:NodeShape ;
+    sh:targetClass def:Foo ;
+    sh:property foo:stringProp-kind, foo:stringProp-count, foo:stringProp-value,
+        foo:intProp-kind, foo:intProp-count, foo:intProp-value,
+        foo:integerProp-kind, foo:integerProp-count, foo:integerProp-value,
+        foo:floatProp-kind, foo:floatProp-count, foo:floatProp-value,
+        foo:doubleProp-kind, foo:doubleProp-count, foo:doubleProp-value,
+        foo:decimalProp-kind, foo:decimalProp-count, foo:decimalProp-value,
+        foo:booleanProp-kind, foo:booleanProp-count, foo:booleanProp-value,
+        foo:dateProp-kind, foo:dateProp-count, foo:dateProp-value,
+        foo:dateTimeProp-kind, foo:dateTimeProp-count, foo:dateTimeProp-value ;
+   .
+
+   foo:stringProp-kind
+        sh:path def:stringProp ;
+        sh:nodeKind sh:Literal ;
+   .
+   foo:stringProp-count
+        sh:path def:stringProp ;
+        sh:maxCount 1 ;
+        sh:message "Invalid count of http://example.org/def/stringProp on target shape. Expected 0 or 1."@en ;
+   .
+    foo:stringProp-value
+        sh:path def:stringProp ;
+        sh:datatype xsd:string ;
+    .
+
+foo:intProp-kind
+    sh:path def:intProp ;
+    sh:nodeKind sh:Literal ;
+.
+foo:intProp-count
+    sh:path def:intProp ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/intProp on target shape. Expected 0 or 1."@en ;
+.
+foo:intProp-value
+    sh:path def:intProp ;
+    sh:datatype xsd:int ;
+.
+foo:integerProp-kind
+    sh:path def:integerProp ;
+    sh:nodeKind sh:Literal ;
+.
+foo:integerProp-count
+    sh:path def:integerProp ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/integerProp on target shape. Expected 0 or 1."@en ;
+.
+foo:integerProp-value
+    sh:path def:integerProp ;
+    sh:datatype xsd:integer ;
+.
+foo:floatProp-kind
+    sh:path def:floatProp ;
+    sh:nodeKind sh:Literal ;
+.
+foo:floatProp-count
+    sh:path def:floatProp ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/floatProp on target shape. Expected 0 or 1."@en ;
+.
+foo:floatProp-value
+    sh:path def:floatProp ;
+    sh:datatype xsd:float ;
+.
+foo:doubleProp-kind
+    sh:path def:doubleProp ;
+    sh:nodeKind sh:Literal ;
+.
+foo:doubleProp-count
+    sh:path def:doubleProp ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/doubleProp on target shape. Expected 0 or 1."@en ;
+.
+foo:doubleProp-value
+    sh:path def:doubleProp ;
+    sh:datatype xsd:double ;
+.
+foo:decimalProp-kind
+    sh:path def:decimalProp ;
+    sh:nodeKind sh:Literal ;
+.
+foo:decimalProp-count
+    sh:path def:decimalProp ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/decimalProp on target shape. Expected 0 or 1."@en ;
+.
+foo:decimalProp-value
+    sh:path def:decimalProp ;
+    sh:datatype xsd:decimal ;
+.
+foo:booleanProp-kind
+    sh:path def:booleanProp ;
+    sh:nodeKind sh:Literal ;
+.
+foo:booleanProp-count
+    sh:path def:booleanProp ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/booleanProp on target shape. Expected 0 or 1."@en ;
+.
+foo:booleanProp-value
+    sh:path def:booleanProp ;
+    sh:datatype xsd:boolean ;
+.
+
+foo:dateProp-kind
+    sh:path def:dateProp ;
+    sh:nodeKind sh:Literal ;
+.
+foo:dateProp-count
+    sh:path def:dateProp ;
+        sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/dateProp on target shape. Expected 0 or 1."@en ;
+.
+foo:dateProp-value
+    sh:path def:dateProp ;
+    sh:datatype xsd:date ;
+.
+
+foo:dateTimeProp-kind
+    sh:path def:dateTimeProp ;
+    sh:nodeKind sh:Literal ;
+.
+foo:dateTimeProp-count
+    sh:path def:dateTimeProp ;
+    sh:maxCount 1 ;
+    sh:message "Invalid count of http://example.org/def/dateTimeProp on target shape. Expected 0 or 1."@en ;
+.
+foo:dateTimeProp-value
+    sh:path def:dateTimeProp ;
+    sh:datatype xsd:dateTime ;
+.

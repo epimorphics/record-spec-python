@@ -1,0 +1,8 @@
+@prefix ex: <http://example.org/def/> .
+@prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
+@prefix spec: <http://example.org/spec/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+spec:Foo a sh:NodeShape ;
+    sh:targetClass ex:Foo ;
+.

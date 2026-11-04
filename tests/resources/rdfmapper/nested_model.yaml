@@ -1,0 +1,94 @@
+base: http://example.org/spec/literals_model.ttl
+prefixes:
+  - prefix: ex
+    uri: http://example.org/
+  - prefix: rdf
+    uri: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+
+records:
+  RecordA:
+    classUri: ex:A
+    shortCode: RecordA
+    properties:
+      p1:
+        propertyUri: ex:p1
+        shortCode: p1
+        kind: object
+        nested: true
+        repeatable: true
+        constraints:
+          - record: RecordB
+  RecordB:
+    classUri: ex:B
+    shortCode: RecordB
+    properties:
+      label:
+        propertyUri: ex:label
+        shortCode: label
+        kind: literal
+        constraints:
+          - datatype: rdf:langString
+  Recursive:
+    classUri: ex:Recursive
+    shortCode: Recursive
+    properties:
+      p1:
+        propertyUri: ex:p1
+        shortCode: p1
+        kind: object
+        nested: true
+        constraints:
+          - record: Recursive
+  Circular:
+    classUri: ex:Circular
+    shortCode: Circular
+    properties:
+      p1:
+        propertyUri: ex:p1
+        shortCode: p1
+        kind: object
+        nested: true
+        constraints:
+          - record: Circular2
+  Circular2:
+    classUri: ex:Circular2
+    shortCode: Circular2
+    properties:
+      p1:
+        propertyUri: ex:p1
+        shortCode: p1
+        kind: object
+        nested: true
+        constraints:
+          - record: Circular3
+  Circular3:
+      classUri: ex:Circular3
+      shortCode: Circular3
+      properties:
+        p1:
+          propertyUri: ex:p1
+          shortCode: p1
+          kind: object
+          nested: true
+          constraints:
+            - record: Circular
+  Inheritance:
+    classUri: ex:Inheritance
+    shortCode: Inheritance
+    properties:
+      p1:
+        propertyUri: ex:p1
+        shortCode: p1
+        kind: object
+        nested: true
+        constraints:
+          - record: Parent
+  Parent:
+    classUri: ex:Parent
+    shortCode: Parent
+  Child:
+    classUri: ex:Child
+    shortCode: Child
+    extends: Parent

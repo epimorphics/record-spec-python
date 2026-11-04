@@ -1,0 +1,122 @@
+{
+  "$id": "http://example.org/spec/Foo",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/spec:Foo",
+  "definitions": {
+    "spec:Foo": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "@type": {
+          "type": "string",
+          "enum": ["http://example.org/def/Foo"]
+        },
+        "stringProp": {
+          "type": "string"
+        },
+        "intProp": {
+          "type": "integer"
+        },
+        "integerProp": {
+          "type": "integer"
+        },
+        "floatProp": {
+          "type": "number"
+        },
+        "doubleProp": {
+          "type": "number"
+        },
+        "decimalProp": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "@value": {
+                  "type": "string"
+                },
+                "@type": {
+                  "type": "string",
+                  "enum": [
+                    "http://www.w3.org/2001/XMLSchema#decimal"
+                  ]
+                }
+              },
+              "required": [
+                "@value",
+                "@type"
+              ]
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "booleanProp": {
+          "type": "boolean"
+        },
+        "dateProp": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "@value": {
+                  "type": "string"
+                },
+                "@type": {
+                  "type": "string",
+                  "enum": [
+                    "http://www.w3.org/2001/XMLSchema#date"
+                  ]
+                }
+              },
+              "required": [
+                "@value",
+                "@type"
+              ]
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "dateTimeProp": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "@value": {
+                  "type": "string"
+                },
+                "@type": {
+                  "type": "string",
+                  "enum": [
+                    "http://www.w3.org/2001/XMLSchema#dateTime"
+                  ]
+                }
+              },
+              "required": [
+                "@value",
+                "@type"
+              ]
+            },
+            {"type": "string"}
+          ]
+        }
+      },
+      "required": ["@type"]
+    },
+    "_ref": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "@id"
+      ]
+    }
+  }
+}

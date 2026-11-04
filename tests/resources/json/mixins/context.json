@@ -1,0 +1,27 @@
+{
+  "@version": 1.1,
+  "http://example.org/def/Foo": {
+    "@context": {
+      "labels": {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#label",
+        "@type": "http://www.w3.org/2001/XMLSchema#string",
+        "@container": "@set"
+      },
+      "replaces": {
+        "@id": "http://example.org/def/replaces"
+      }
+    }
+  },
+  "http://example.org/def/Bar": {
+    "@context": {
+      "labels": {
+        "@id": "http://www.w3.org/2000/01/rdf-schema#label",
+        "@type": "http://www.w3.org/2001/XMLSchema#string",
+        "@container": "@set"
+      },
+      "tags": {
+        "@id": "http://example.org/def/tag"
+      }
+    }
+  }
+}
