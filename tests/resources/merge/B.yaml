@@ -1,0 +1,20 @@
+identifier: "http://example.org/spec/B"
+base: "http://example.org/spec/"
+prefixes:
+  - prefix: ex
+    uri: "http://example.org/def/"
+  - prefix: xsd
+    uri: "http://www.w3.org/2001/XMLSchema#"
+records:
+  RecordB:
+    shortCode: B
+    classUri: ex:RecordB
+    mixins:
+      - MixinA
+    properties:
+      name:
+        kind: literal
+        propertyUri: ex:name
+        required: true
+        constraints:
+          - datatype: xsd:string

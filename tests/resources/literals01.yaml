@@ -1,0 +1,46 @@
+base: http://test.epimorphics.com/record-spec/literals01
+prefixes:
+  - prefix: d
+    uri: http://test.epimorphics.com/record-spec/def/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+records:
+  Foo:
+    classUri: d:Foo
+    shortCode: Foo
+    properties:
+      withPattern:
+        kind: literal
+        propertyUri: d:withPattern
+        constraints:
+          - datatype: xsd:string
+            pattern: ^[a-zA-Z][0-9a-zA-Z]*$
+      withInclusiveRange:
+        kind: literal
+        propertyUri: d:withInclusiveRange
+        constraints:
+          - datatype: xsd:integer
+            minInclusive: 0
+            maxInclusive: 10
+      withExclusiveRange:
+        kind: literal
+        propertyUri: d:withExclusiveRange
+        constraints:
+          - datatype: xsd:integer
+            minExclusive: -10
+            maxExclusive: 10
+      withEnumeration:
+        kind: literal
+        propertyUri: d:withEnumeration
+        constraints:
+          - datatype: xsd:string
+            in:
+              - RED
+              - GREEN
+              - BLUE
+      withUnion:
+        kind: literal
+        propertyUri: d:withUnion
+        constraints:
+          - datatype: xsd:date
+          - datatype: xsd:dateTime

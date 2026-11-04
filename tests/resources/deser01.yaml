@@ -1,0 +1,32 @@
+base: http://example.org/deser01/
+identifier: http://example.org/deser01
+prefixes:
+  - prefix: ex
+    uri: http://example.org/def/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+mixins:
+  Bar:
+    label:
+      - Bar
+    summary:
+      - value: Summary Text
+    description:
+      - value: Text with a language
+        language: en
+    properties:
+      bar:
+        propertyUri: ex:bar
+        kind: literal
+        datatype: xsd:string
+      baz:
+        propertyUri: ex:baz
+        kind: object
+        constraints:
+          - record: Foo
+  Baz:
+    id: mymixin#Baz
+records:
+  Foo:
+    classUri: ex:Foo
+    shortCode: Foo

@@ -1,0 +1,15 @@
+base: "http://example.org/spec/"
+prefixes:
+  - prefix: ex
+    uri: "http://example.org/def/"
+  - prefix: xsd
+    uri: "http://www.w3.org/2001/XMLSchema#"
+mixins:
+  MixinA:
+    properties:
+      label:
+        kind: literal
+        propertyUri: ex:label
+        required: true
+        constraints:
+          - datatype: xsd:string

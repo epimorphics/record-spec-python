@@ -1,0 +1,24 @@
+base: http://example.org/spec/
+prefixes:
+  - prefix: def
+    uri: http://example.org/def/
+records:
+  Foo:
+    shortCode: Foo
+    classUri: def:Foo
+    properties:
+      hasBar:
+        kind: object
+        propertyUri: def:hasBar
+        nested: true
+        constraints:
+          - record: Bar
+  Bar:
+    shortCode: Bar
+    classUri: def:Bar
+    properties:
+      isBarOf:
+        kind: object
+        propertyUri: def:isBarOf
+        constraints:
+          - record: Foo

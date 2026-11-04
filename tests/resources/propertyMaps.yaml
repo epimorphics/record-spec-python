@@ -1,0 +1,64 @@
+base: http://example.org/spec/mixins.ttl
+prefixes:
+  - prefix: ex
+    uri: http://example.org/def/
+  - prefix: spec
+    uri: http://example.org/spec/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+
+records:
+  Foo:
+    id: spec:Foo
+    classUri: ex:Foo
+    shortCode: Foo
+    mixins:
+      - MixinA
+
+  Bar:
+    id: spec:Bar
+    classUri: ex:Bar
+    shortCode: Bar
+    properties:
+      notation:
+        propertyUri: ex:notation
+        kind: literal
+        required: true
+        constraints:
+          - datatype: xsd:string
+      label:
+        propertyUri: ex:label
+        kind: literal
+        repeatable: true
+        constraints:
+          - datatype: xsd:string
+
+  Baz:
+    id: spec:Baz
+    classUri: ex:Baz
+    shortCode: Baz
+    properties:
+      fooMap:
+        propertyUri: ex:fooMap
+        kind: object
+        nested: true
+        repeatable: true
+        map:
+          keyProperty: identifier
+      barMap:
+        propertyUri: ex:barLabelMap
+        kind: object
+        nested: true
+        repeatable: true
+        map:
+          keyProperty: notation
+
+mixins:
+  MixinA:
+    properties:
+      identifier:
+        propertyUri: ex:identifier
+        required: true
+        kind: literal
+        constraints:
+          - datatype: xsd:string

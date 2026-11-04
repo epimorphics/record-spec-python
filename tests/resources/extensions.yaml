@@ -1,0 +1,44 @@
+base: http://example.org/spec/
+prefixes:
+  - prefix: def
+    uri: http://example.org/def/
+extensions:
+  - type: http://example.org/def/MyExtension
+    someProperty: foo
+    someOtherProperty:
+      nestedProperty: bar
+  - type: http://epimorphics.com/def/EpimorphicsExtension
+    someProperty: baz
+
+mixins:
+  Bar:
+    extensions:
+      - type: http://example.org/def/MyExtension
+        someProperty: foo
+        someOtherProperty:
+          nestedProperty: bar
+      - type: http://epimorphics.com/def/EpimorphicsExtension
+        someProperty: baz
+
+records:
+  Foo:
+    shortCode: Foo
+    classUri: def:Foo
+    extensions:
+      - type: http://example.org/def/MyExtension
+        someProperty: foo
+        someOtherProperty:
+          nestedProperty: bar
+      - type: http://epimorphics.com/def/EpimorphicsExtension
+        someProperty: baz
+    properties:
+      foo:
+        kind: literal
+        propertyUri: def:Foo
+        extensions:
+          - type: http://example.org/def/MyExtension
+            someProperty: foo
+            someOtherProperty:
+              nestedProperty: bar
+          - type: http://epimorphics.com/def/EpimorphicsExtension
+            someProperty: baz

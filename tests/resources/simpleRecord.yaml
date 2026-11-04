@@ -1,0 +1,52 @@
+base: http://test.epimorphics.com/record-spec/simpleRecord.yaml
+prefixes:
+  - prefix: d
+    uri: http://test.epimorphics.com/record-spec/def/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+  - prefix: rdfs
+    uri: http://www.w3.org/2000/01/rdf-schema#
+records:
+  Simple:
+    classUri: d:Simple
+    shortCode: Simple
+    label:
+      - Simple
+      - Simple Record
+    summary:
+      - A simple record.
+      - value: Un record simple.
+        language: fr
+    description:
+      - value: A simple record.
+        language: en
+      - value: Un record simple.
+        language: fr
+    properties:
+      label:
+        propertyUri: rdfs:label
+        label:
+          - value: Label
+            language: en
+        summary:
+          - value: The display label for this item.
+            language: en
+        kind: literal
+        constraints:
+          - datatype: xsd:string
+        required: true
+      related:
+        propertyUri: d:related
+        kind: object
+        label:
+          - Related To
+        constraints:
+          - record: Simple
+        repeatable: true
+      hasPart:
+        propertyUri: d:hasPart
+        kind: object
+        nested: true
+        constraints:
+          - record: Simple
+        repeatable: true

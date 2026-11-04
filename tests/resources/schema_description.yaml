@@ -1,0 +1,5 @@
+identifier: "http://vocab.epimorphics.com/agora/def/catalog"
+base: "http://vocab.epimorphics.com/agora/def/"
+description:
+  - value: "A subset of the Agora Catalog data model, adapted for testing purposes."
+    language: "en"

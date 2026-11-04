@@ -1,0 +1,570 @@
+# $schema: record-spec.schema.json
+base: http://vocab.epimorphics.com/record-spec/record-spec.yaml
+prefixes:
+  - prefix: rec
+    uri: http://vocab.epimorphics.com/record-spec/def/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+  - prefix: rdf
+    uri: http://www.w3.org/1999/02/22-rdf-syntax-ns#
+  - prefix: rdfs
+    uri: http://www.w3.org/2000/01/rdf-schema#
+  - prefix: dct
+    uri: http://purl.org/dc/terms/
+  - prefix: qb
+    uri: http://purl.org/linked-data/cube#
+  - prefix: skos
+    uri: http://www.w3.org/2004/02/skos/core#
+
+mixins:
+
+  WithDocumentation:
+    label:
+      - value: With Documentation
+        language: en
+    summary:
+      - value: Provides properties for documenting elements of a record-spec schema.
+        language: en
+    properties:
+      label:
+        label:
+          - value: label
+            language: en
+        summary:
+          - value: A display label for the item
+            language: en
+        propertyUri: rdfs:label
+        kind: literal
+        repeatable: true
+        constraints:
+          - datatype: xsd:string
+          - datatype: rdf:langString
+      summary:
+        label:
+          - value: summary
+            language: en
+        summary:
+          - value: A brief (one or two sentence) description of the item and its intended use.
+            language: en
+        propertyUri: rdfs:comment
+        kind: literal
+        repeatable: true
+        constraints:
+          - datatype: xsd:string
+          - datatype: rdf:langString
+      description:
+        label:
+          - value: description
+            language: en
+        summary:
+          - value: A verbose description of the item and its intended use.
+            language: en
+        propertyUri: dct:description
+        kind: literal
+        repeatable: true
+        constraints:
+          - datatype: xsd:string
+          - datatype: rdf:langString
+
+records:
+  Schema:
+    label:
+      - value: Record-spec Schema
+        language: en
+    summary:
+      - value: A wrapper providing access to a consistent set of record and mixin definitions.
+        language: en
+    classUri: rec:Schema
+    mixins:
+      - WithDocumentation
+    shortCode: RecordSpecSchema
+    properties:
+      identifier:
+        label:
+          - value: Schema Identifier
+            language: en
+        summary:
+          - value: An format-independent IRI identifier for the record-spec schema.
+            language: en
+        description:
+          - value: |
+              This property provides an IRI identifier for the schema that is independent of the format or location
+              of the schema file. It is recommended that the identifier provided SHOULD be an HTTP/HTTPS IRI and that
+              the IRI SHOULD resolve via standard HTTP content negotiation to an instance of the schema in one of the
+              supported formats. However, the identifier can also be used to uniquely identify schemas in situations
+              where HTTP resolution is not used, for example when bundling together a collection of schemas in a ZIP
+              file or in a multi-part YAML file.
+            language: en
+        propertyUri: rec:identifier
+        kind: literal
+        constraints:
+          - datatype: xsd:string
+      base:
+        label:
+          - value: Base URI
+            language: en
+        summary:
+          - value: The base URI for this schema. Used to resolve relative URI references.
+            language: en
+        description:
+          - value: |
+              The `base` property provides a base URI to use when processing the schema.
+              This base URI is used to resolve any relative URI references in the schema.
+              This is particularly useful for writing short keys for records and mixins in the YAML/JSON
+              serialization of the schema, as a key "Foo" is treated as a relative URI.
+              For example if the base URI of the schema is "http://example.org/spec/", the key "Foo"
+              expands to the URI "http://example.org/spec/Foo".
+              
+              NOTE: if the base URI has a final segment that does not end with a slash, the
+              resolution of relative URIs will replease that final segment. e.g. if the
+              base URI of the schema is "http://example.org/spec/myspec.yaml", the key "Foo"
+              expands to the URI "http://example.org/spec/Foo".
+
+            language: en
+        propertyUri: rec:base
+        kind: literal
+        constraints:
+          - datatype: xsd:string
+
+      imports:
+        label:
+          - value: Schema imports
+            language: en
+        summary:
+          - value: A list of URIs of schemas to be imported
+            language: en
+        description:
+          - value: |
+              A schema may import any number of other schemas. Imported schemas will contribute their mixins and
+              record definitions which may then be referenced and used by the importing schema. Imports are 
+              transitive, so if schema A imports schema B and schema B imports schema C, schema A will also
+              contain the results of the import of schema C.
+              
+              Import URIs may be written as relative URIs in which case they are resolved relative to the base URI
+              of the schema, or the URL that the schema was loaded from if the schema does not itself include
+              a `base` property.
+              
+              When processing transitive imports, circular references are broken by simply ignoring the import of schemas
+              that have already been imported.
+            language: en
+        propertyUri: rec:imports
+        kind: literal
+        repeatable: true
+        constraints:
+          - datatype: xsd:string
+
+      prefixes:
+        label:
+          - value: Prefix mappings
+            language: en
+        summary:
+          - value: A list of prefix to URI mappings used to expand compact URIs in the form "prefix:rest"
+            language: en
+        propertyUri: rec:prefixMapping
+        kind: object
+        repeatable: true
+        nested: true
+        constraints:
+          - record: PrefixMapping
+
+      mixins:
+        label:
+          - value: Mixins
+            language: en
+        summary:
+          - value: The mixins provided by this schema.
+            language: en
+        description:
+          - value: |
+              A collection of mixins provided by this schema.
+
+              In the JSON/YAML serialization of the schema, mixins are provided as a map of values where the map
+              key is the URI of the mixin and may be written as an absolute URI, a relative URI (which will be
+              resolved against the base URI of the schema), or as a compact URI.
+            language: en
+        propertyUri: rec:mixin
+        kind: object
+        repeatable: true
+        nested: true
+        constraints:
+          - record: Mixin
+        map:
+          keyProperty: "@id"
+
+      records:
+        label:
+          - value: Records
+            language: en
+        summary:
+          - value: The records provided by this schema.
+            language: en
+        description:
+          - value: |
+              A collection of record definitions provided by this schema.
+              
+              In the JSON/YAML serialization of the schema, this property is expressed as a map of values where
+              the map key is the URI of the record and may be written as an absolute URI, a relative URI which will
+              be resolved against the base URI of the schema, or as a compact URI.
+            language: en
+        propertyUri: rec:record
+        kind: object
+        nested: true
+        repeatable: true
+        constraints:
+          - record: Record
+        map:
+          keyProperty: "@id"
+
+      extensions:
+        label:
+          - value: Extensions
+            language: en
+        description:
+          - value: |
+              An optional collection of extension records associated with the containing record.
+              
+              Extension records are intended to provide additional schema metadata which can be processed by an
+              extension service provider.
+            language: en
+        propertyUri: rec:extension
+        kind: object
+        nested: true
+        repeatable: true
+        constraints:
+          - record: Extension
+
+
+  PrefixMapping:
+    label:
+      - value: Prefix Mapping
+        language: en
+    summary:
+      - value: Specifies a prefix to URI mapping to use when expanding compact URI references in this schema.
+        language: en
+    classUri: rec:PrefixMapping
+    shortCode: RecordSpecPrefixMapping
+    properties:
+      prefix:
+        label:
+          - value: Prefix
+            language: en
+        propertyUri: rec:prefix
+        kind: literal
+        required: true
+        constraints:
+          - datatype: xsd:string
+      uri:
+        label:
+          - value: URI
+            language: en
+        propertyUri: rec:uri
+        kind: literal
+        required: true
+        constraints:
+          - datatype: xsd:string
+
+  Record:
+    label:
+      - value: Record Definition
+        language: en
+    summary:
+      - value: Defines the structure of a record.
+        language: en
+    description:
+      - value: |
+          Defines the structure of a record.
+          
+          A record definition may extend one other record definition, inheriting all of its properties and optionally
+          adding new constraints to them.
+          
+          A record definition may also include any number of mixins. Mixins add their properties to the structure
+          of the record, but these properties cannot be redefined or extended by the record that uses them.
+        language: en
+    classUri: rec:Record
+    shortCode: RecordSpecRecord
+    mixins:
+      - WithDocumentation
+    properties:
+      classUri:
+        label:
+          - value: Class URI
+            language: en
+        summary:
+          - value: Specifies the URI of the class that instances of this record definition belong to.
+            language: en
+        propertyUri: rec:uri
+        kind: object
+        required: true
+      extends:
+        label:
+          - value: Extends
+            language: en
+        summary:
+          - value: References the record definition that this record definition extends.
+            language: en
+        description:
+          - value: |
+              The record-spec model allows only a single inheritance model where each record definition
+              extends at most one other record definition and the inheritance chain may not include any
+              cycles.
+              
+              A record definition "inherits" all of the properties defined in the record definition that it extends,
+              but can specialise these definitions by defining its own properties with a matching short code and
+              property URI.
+            language: en
+        propertyUri: rec:extends
+        kind: object
+        constraints:
+          - record: Record
+      mixins:
+        propertyUri: rec:implements
+        kind: object
+        repeatable: true
+        constraints:
+          - record: Mixin
+      shortCode:
+        propertyUri: rec:shortCode
+        kind: literal
+        required: true
+        constraints:
+          - datatype: xsd:string
+            pattern: "[a-zA-Z_][a-zA-Z0-9_]*"
+      properties:
+        propertyUri: rec:property
+        kind: object
+        repeatable: true
+        nested: true
+        constraints:
+          - record: Property
+        map:
+          keyProperty: shortCode
+      extensions:
+        label:
+          - value: Extensions
+            language: en
+        description:
+          - value: |
+              An optional collection of extension records associated with the containing record.
+              
+              Extension records are intended to provide additional schema metadata which can be processed by an
+              extension service provider.
+            language: en
+        propertyUri: rec:extension
+        kind: object
+        nested: true
+        repeatable: true
+        constraints:
+          - record: Extension
+
+  Mixin:
+    classUri: rec:Mixin
+    mixins:
+      - WithDocumentation
+    shortCode: RecordSpecMixin
+    properties:
+      properties:
+        propertyUri: rec:property
+        kind: object
+        repeatable: true
+        nested: true
+        constraints:
+          - record: Property
+        map:
+          keyProperty: shortCode
+      extensions:
+        label:
+          - value: Extensions
+            language: en
+        description:
+          - value: |
+              An optional collection of extension records associated with the containing record.
+              
+              Extension records are intended to provide additional schema metadata which can be processed by an
+              extension service provider.
+            language: en
+        propertyUri: rec:extension
+        kind: object
+        nested: true
+        repeatable: true
+        constraints:
+          - record: Extension
+
+  Property:
+    classUri: rec:Property
+    mixins:
+      - WithDocumentation
+    shortCode: RecordSpecProperty
+    properties:
+      kind:
+        propertyUri: rec:kind
+        kind: literal
+        required: true
+        constraints:
+          - datatype: xsd:string
+            in:
+              - object
+              - literal
+      shortCode:
+        propertyUri: rec:shortCode
+        kind: literal
+        required: true
+        constraints:
+          - datatype: xsd:string
+            pattern: "[a-zA-Z_][a-zA-Z0-9_]*"
+      propertyUri:
+        propertyUri: rec:uri
+        kind: object
+        required: true
+      required:
+        propertyUri: rec:required
+        kind: literal
+        constraints:
+          - datatype: xsd:boolean
+      repeatable:
+        propertyUri: rec:required
+        kind: literal
+        constraints:
+          - datatype: xsd:boolean
+      extensions:
+        label:
+          - value: Extensions
+            language: en
+        description:
+          - value: |
+              An optional collection of extension records associated with the containing record.
+              
+              Extension records are intended to provide additional schema metadata which can be processed by an
+              extension service provider.
+            language: en
+        propertyUri: rec:extension
+        kind: object
+        nested: true
+        repeatable: true
+        constraints:
+          - record: Extension
+
+  RecordProperty:
+    classUri: rec:RecordProperty
+    extends: Property
+    shortCode: RecordSpecRecordProperty
+    properties:
+      nested:
+        propertyUri: rec:nested
+        kind: literal
+        constraints:
+          - datatype: xsd:boolean
+      constraints:
+        propertyUri: rec:constraint
+        kind: object
+        repeatable: true
+        nested: true
+        constraints:
+          - record: RecordConstraint
+
+  RecordConstraint:
+    classUri: rec:RecordConstraint
+    shortCode: RecordSpecRecordConstraint
+    properties:
+      record:
+        propertyUri: rec:record
+        kind: object
+        required: true
+        constraints:
+          - record: Record
+      # NOTE: This is missing in the current API as I completely forgot about the property and just implemented
+      # another `in` property. This is definitely a more meaningful/useful form of constraint than a simple
+      # enumeration of allowed resources, but should we maybe also support `in`?
+      codeList:
+        propertyUri: qb:codeList
+        kind: object
+        repeatable: true
+        constraints:
+          - record: Collection
+          - record: ConceptScheme
+
+  LiteralProperty:
+    classUri: rec:LiteralProperty
+    extends: Property
+    shortCode: RecordSpecLiteralProperty
+    properties:
+      constraints:
+        propertyUri: rec:constraint
+        kind: object
+        repeatable: true
+        nested: true
+        constraints:
+          - record: LiteralConstraint
+
+  LiteralConstraint:
+    classUri: rec:LiteralConstraint
+    shortCode: RecordSpecLiteralConstraint
+    properties:
+      datatype:
+        # Open range here. Could be restricted to rdfs:Datatype, but is that meaningful/useful ?
+        # In the original documentation I had proposed these as literals of type xsd:anyURI, but then
+        # in RDF serializations you lose the ability to use CURIEs and the values become stub literal resources
+        # rather than properly linked data.
+        propertyUri: rec:datatype
+        kind: object
+        required: true
+      pattern:
+        propertyUri: rec:pattern
+        kind: literal
+        constraints:
+          - datatype: xsd:string
+      # Open range literals
+      minExclusive:
+        propertyUri: rec:minExclusive
+        kind: literal
+        constraints:
+          - datatype: xsd:string
+      maxExclusive:
+        propertyUri: rec:maxExclusive
+        kind: literal
+        constraints:
+          - datatype: xsd:string
+      minInclusive:
+        propertyUri: rec:minInclusive
+        kind: literal
+        constraints:
+          - datatype: xsd:string
+      maxInclusive:
+        propertyUri: rec:maxInclusive
+        kind: literal
+        constraints:
+          - datatype: xsd:string
+      in:
+        propertyUri: rec:in
+        kind: literal
+        repeatable: true
+        constraints:
+          - datatype: xsd:string
+
+  # Collection and ConceptScheme are "stub" records that only provide a mapping to an RDF class
+  # Perhaps this indicates we should have a third type of constraint and/or property for references
+  # to resources which are not defined in the record schema.
+  Collection:
+    classUri: skos:Collection
+    shortCode: SkosCollection
+
+  ConceptScheme:
+    classUri: skos:ConceptScheme
+    shortCode: SkosConceptScheme
+
+  Extension:
+    classUri: rec:Extension
+    shortCode: RecordSpecExtension
+    label:
+      - value: Record Spec Extension Record
+        language: en
+    description:
+      - value: |
+          A base type for records which provide extension annotations on a record-spec schema.
+          
+          This record type does not itself define any properties, but should be used as the
+          parent of record types that define particular sets of properties for specific extensions to 
+          record-spec.
+          
+          Extensions can be added to the `Schema`, `Mixin`, `Record` and `Property` record types
+          using the `extensions` property.
+        language: en

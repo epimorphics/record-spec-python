@@ -1,0 +1,12 @@
+base: "http://example.org/spec/"
+prefixes:
+  - prefix: ex
+    uri: "http://example.org/def/"
+mixins:
+  MixinA:
+    properties:
+      description:
+        kind: literal
+        propertyUri: ex:description
+        constraints:
+          - datatype: xsd:string
