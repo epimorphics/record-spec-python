@@ -68,13 +68,25 @@ def test_resolve_record_resolves_with_curie():
     assert rec.class_uri == "http://example.org/def/Thing"
 
 
-def test_delete_record_throws_if_record_is_referenced():
+def test_delete_record_throws_if_record_is_referenced_as_a_parent():
     schema = Schema()
     base = schema.create_record("http://example.org/base", "http://example.org/def/Base", "Base")
     derived = schema.create_record("http://example.org/derived", "http://example.org/def/Derived", "Derived")
     derived.set_parent(base.id)
     with pytest.raises(RecordReferencedException):
         schema.delete_record(base.id)
+    assert len(list(schema.records)) == 2
+
+
+def test_delete_record_throws_if_record_is_referenced_from_a_record_constraint():
+    """Port of the upstream #61 regression test."""
+    schema = Schema()
+    foo = schema.create_record("http://example.org/foo", "http://example.org/def/Foo", "Foo")
+    bar = schema.create_record("http://example.org/bar", "http://example.org/def/Bar", "Bar")
+    has_foo = bar.create_record_property("hasFoo", "http://example.org/def/hasFoo")
+    has_foo.add_constraint(foo.id)
+    with pytest.raises(RecordReferencedException):
+        schema.delete_record(foo.id)
     assert len(list(schema.records)) == 2
 
 

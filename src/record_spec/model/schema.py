@@ -112,13 +112,28 @@ class Schema(Documentable, CuriResolver, EventListener, Extensible, RecordResolv
     def delete_record(self, id_or_short_code: str) -> None:
         """Remove the record with the specified ID or short-code from this schema.
 
-        :raises RecordReferencedException: if the record is referenced by other
-            elements of the schema.
+        :raises RecordReferencedException: if the record is currently referenced
+            within the schema, either as the parent of another record or in a
+            record property constraint (#61 upstream).
         """
+        from itertools import chain
+
+        from .property import RecordProperty
+
         record = self.resolve_record(id_or_short_code)
         if any(r.has_parent(record.id) for r in self._records):
             raise RecordReferencedException(record.id)
-        # TODO: Ensure record is not referenced by any RecordConstraints
+        all_properties = chain(
+            chain.from_iterable(r.effective_properties for r in self._records),
+            chain.from_iterable(m.properties for m in self._mixins),
+        )
+        if any(
+            constraint.record.id == record.id
+            for prop in all_properties
+            if isinstance(prop, RecordProperty)
+            for constraint in prop.constraints
+        ):
+            raise RecordReferencedException(record.id)
         self._records.remove(record)
 
     def create_mixin(self, mixin_id: str) -> Mixin:
