@@ -45,6 +45,15 @@ def test_create_record_throws_on_duplicate_id():
     assert exc_info.value.attribute_value == "http://example.org/record"
 
 
+def test_resolve_throws_on_relative_uri_if_no_base_uri():
+    """Port of the upstream #62 regression test."""
+    from record_spec.exceptions import UriResolutionException
+
+    schema = Schema()
+    with pytest.raises(UriResolutionException):
+        schema.resolve("foo/bar")
+
+
 def test_resolve_record_resolves_with_id():
     schema = Schema()
     schema.create_record("http://example.org/record", "http://example.org/def/Thing", "Thing")

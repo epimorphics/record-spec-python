@@ -257,6 +257,14 @@ class InvalidMixinException(RecordSpecException):
         super().__init__(f"Invalid mixin: {mixin.id}.\n\tCause: {detail}", cause)
 
 
+class UriResolutionException(RecordSpecException):
+    """Raised when an attempt is made to resolve a relative URI when there is
+    no base URI in scope (#62 upstream)."""
+
+    def __init__(self, message: str):
+        super().__init__(message)
+
+
 class InvalidShortCodeException(RecordSpecException):
     """Raised when a short-code does not match the required syntax."""
 

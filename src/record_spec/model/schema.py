@@ -9,6 +9,7 @@ from urllib.parse import urljoin, urlsplit
 from record_spec.convert import MixinAdapter, RecordAdapter, SchemaAdapter
 from record_spec.exceptions import (
     MixinExistsException,
+    UriResolutionException,
     MixinNotFoundException,
     MixinReferencedException,
     RecordClassUriClashException,
@@ -239,7 +240,11 @@ class Schema(Documentable, CuriResolver, EventListener, Extensible, RecordResolv
         self._prefix_mappings.pop(prefix, None)
 
     def resolve(self, curi: str) -> str:
-        """Expand a CURI or relative reference into a full IRI."""
+        """Expand a CURI or relative reference into a full IRI.
+
+        :raises UriResolutionException: if ``curi`` is a relative URI and
+            there is no base URI in scope (#62 upstream).
+        """
         if ":" in curi:
             prefix, rest = curi.split(":", 1)
             if prefix in self._prefix_mappings:
@@ -248,7 +253,7 @@ class Schema(Documentable, CuriResolver, EventListener, Extensible, RecordResolv
             return curi
         if self.base_uri is not None:
             return urljoin(self.base_uri, curi)
-        raise ValueError(f"URI {curi} is a relative URI and there is no in-scope base URI to resolve against.")
+        raise UriResolutionException(f"URI {curi} is a relative URI and there is no in-scope base URI to resolve against.")
 
     def compact(self, uri: str) -> str:
         """Compact a full IRI into a CURI or relative reference where possible."""
