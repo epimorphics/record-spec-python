@@ -124,6 +124,22 @@ class PropertyClashException(RecordSpecException):
         super().__init__(f"Clash between property {property_a} and property {property_b}.")
 
 
+class ShortCodeExistsException(RecordSpecException):
+    """Raised when creating a property whose short code is already used by another
+    property on the same record (#60 upstream)."""
+
+    def __init__(self, short_code: str):
+        super().__init__(f"A property with short code {short_code} is already defined on the record.")
+
+
+class PropertyUriExistsException(RecordSpecException):
+    """Raised when creating a property whose predicate URI is already used by another
+    property on the same record (#60 upstream)."""
+
+    def __init__(self, uri: str):
+        super().__init__(f"A property with a property URI of '{uri}' is already defined for this record.")
+
+
 class MixinPropertyClashException(RecordSpecException):
     """Raised when two mixins used by the same record define clashing properties."""
 

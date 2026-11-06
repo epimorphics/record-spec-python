@@ -8,6 +8,8 @@ from record_spec.convert import PropertyAdapter, RecordAdapter
 from record_spec.exceptions import (
     CircularInheritanceException,
     IncompatiblePropertyException,
+    PropertyUriExistsException,
+    ShortCodeExistsException,
     InvalidRecordException,
     InvalidShortCodeException,
     MixinExistsException,
@@ -137,7 +139,14 @@ class Record(Documentable, Extensible, EventListener, EventSourceMixin, Property
         property_mapping: PropertyMapping | None = None,
     ) -> RecordProperty:
         """Create a :class:`RecordProperty` and add it to the properties directly
-        defined on this record."""
+        defined on this record.
+
+        :raises ShortCodeExistsException: if another property with the same
+            short code is already defined on this record.
+        :raises PropertyUriExistsException: if another property with the same
+            predicate URI is already defined on this record.
+        """
+        self._check_property_clash(short_code, uri)
         p = RecordProperty(
             self._schema, short_code, uri, required, repeatable, nested, reversed, property_mapping
         )
@@ -154,12 +163,28 @@ class Record(Documentable, Extensible, EventListener, EventSourceMixin, Property
         repeatable: bool = False,
     ) -> LiteralProperty:
         """Create a :class:`LiteralProperty` and add it to the properties directly
-        defined on this record."""
+        defined on this record.
+
+        :raises ShortCodeExistsException: if another property with the same
+            short code is already defined on this record.
+        :raises PropertyUriExistsException: if another property with the same
+            predicate URI is already defined on this record.
+        """
+        self._check_property_clash(short_code, uri)
         p = LiteralProperty(short_code, uri, required, repeatable)
         self._direct_properties.append(p)
         p.add_listener(self)
         self._on_changed()
         return p
+
+    def _check_property_clash(self, short_code: str, uri: str) -> None:
+        """Creation-time clash checking against directly-defined properties
+        (#60 upstream). Only catches clashes with properties defined directly
+        on the same record; inherited clashes are handled by schema validation."""
+        if any(prop.short_code == short_code for prop in self._direct_properties):
+            raise ShortCodeExistsException(short_code)
+        if any(prop.property_uri == uri for prop in self._direct_properties):
+            raise PropertyUriExistsException(uri)
 
     def remove_property(self, prop: Property | str) -> None:
         """Remove the specified property (by short-code or instance) from the

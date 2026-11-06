@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import pytest
+
 from record_spec.model import RecordProperty, Schema
 from record_spec.values import XSD
 
@@ -127,6 +129,35 @@ def test_parent_record_mixins_extend_effective_properties():
     assert len(props) == 2
     assert any(p.short_code == "bar" for p in props)
     assert any(p.short_code == "label" for p in props)
+
+
+def test_create_literal_property_fails_when_new_property_clashes_on_the_same_record():
+    """Port of the upstream #60 regression tests."""
+    from record_spec.exceptions import PropertyUriExistsException, ShortCodeExistsException
+
+    schema = Schema()
+    record = schema.create_record("http://example.org/record/foo", "http://example.org/def/Foo", "Foo")
+    record.create_literal_property("test", "http://example.org/def/test")
+    with pytest.raises(ShortCodeExistsException):
+        record.create_literal_property("test", "http://example.org/def/test")
+    with pytest.raises(ShortCodeExistsException):
+        record.create_literal_property("test", "http://example.org/def/test2")
+    with pytest.raises(PropertyUriExistsException):
+        record.create_literal_property("test2", "http://example.org/def/test")
+
+
+def test_create_record_property_fails_when_new_property_clashes_on_the_same_record():
+    from record_spec.exceptions import PropertyUriExistsException, ShortCodeExistsException
+
+    schema = Schema()
+    record = schema.create_record("http://example.org/record/foo", "http://example.org/def/Foo", "Foo")
+    record.create_record_property("test", "http://example.org/def/test")
+    with pytest.raises(ShortCodeExistsException):
+        record.create_record_property("test", "http://example.org/def/test")
+    with pytest.raises(ShortCodeExistsException):
+        record.create_record_property("test", "http://example.org/def/test2")
+    with pytest.raises(PropertyUriExistsException):
+        record.create_record_property("test2", "http://example.org/def/test")
 
 
 def test_clone_copies_documentation():

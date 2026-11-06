@@ -421,7 +421,7 @@ records:
         constraints:
           - datatype: xsd:boolean
       repeatable:
-        propertyUri: rec:required
+        propertyUri: rec:repeatable
         kind: literal
         constraints:
           - datatype: xsd:boolean
