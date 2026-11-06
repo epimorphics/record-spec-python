@@ -1,0 +1,8 @@
+{
+  "myId": "http://example.org/test",
+  "myType": "http://example.org/def/Foo",
+  "decimalProp": {
+    "myValue": "3210.01",
+    "myType": "http://www.w3.org/2001/XMLSchema#decimal"
+  }
+}

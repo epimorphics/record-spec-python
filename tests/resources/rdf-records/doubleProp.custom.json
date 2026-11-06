@@ -1,0 +1,5 @@
+{
+  "myId": "http://example.org/test",
+  "myType": "http://example.org/def/Foo",
+  "doubleProp": 3.21E03
+}

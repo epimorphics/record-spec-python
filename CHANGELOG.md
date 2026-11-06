@@ -48,6 +48,11 @@ implementation, keeping both implementations in lockstep:
   descriptions used rdfs:comment) (#64)
 - `JsonSchemaBuilder` honours customized `type_property` and `value_property`
   names instead of hard-coded `@type`/`@value` (#66)
+- `RdfRecordReader` accepts `JsonOptions` and honours the configured
+  id/type/value/language property names and bare reference ids;
+  `RdfRecordWriter`'s structured datatyped-literal dispatch honours
+  `type_property` instead of a hard-coded `@type`, making the
+  JSON⇄RDF record round trip fully symmetric for customized options (#79)
 - Bundled record-spec vocabulary schema: the `repeatable` property declared
   the wrong property URI (`rec:required`); fixed to `rec:repeatable`
 - Fixture parity: the two upstream-invalid Turtle fixtures (missing `@prefix`

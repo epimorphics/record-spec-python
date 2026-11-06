@@ -28,6 +28,67 @@ RECORD_CASES = [
     ("nest", "http://example.org/test", "Bar"),
 ]
 
+#: Custom JSON property names, mirroring the upstream #79 test options.
+CUSTOM_PROPS = dict(
+    type_property="myType",
+    id_property="myId",
+    value_property="myValue",
+    language_property="myLanguage",
+)
+
+
+@pytest.mark.parametrize(("test_name", "resource_uri", "record_def"), RECORD_CASES)
+def test_rdf_to_json_with_custom_properties(test_name, resource_uri, record_def):
+    """Port of the upstream #79 test: the reader honours custom property names."""
+    schema = _load_schema()
+    model = load_rdf(f"rdf-records/{test_name}.ttl")
+    expected_json = load_json(f"rdf-records/{test_name}.custom.json")
+    reader = RdfRecordReader(model, schema, JsonOptions(**CUSTOM_PROPS))
+    actual_json = reader.read_value(URIRef(resource_uri), schema.resolve_record(record_def))
+    assert normalize(actual_json) == normalize(expected_json), (
+        f"Read record does not match rdf-records/{test_name}.custom.json.\n"
+        f"actual: {actual_json}\nexpected: {expected_json}"
+    )
+
+
+@pytest.mark.parametrize(("test_name", "resource_uri", "record_def"), RECORD_CASES)
+def test_json_to_rdf_with_custom_properties(test_name, resource_uri, record_def):
+    """Port of the upstream #79 test: the writer honours custom property names,
+    including the type key of structured datatyped literals (the fix itself)."""
+    schema = _load_schema()
+    expected_model = load_rdf(f"rdf-records/{test_name}.ttl")
+    actual_model = Graph()
+    json_tree = load_json(f"rdf-records/{test_name}.custom.json")
+    writer = RdfRecordWriter(actual_model, JsonOptions(**CUSTOM_PROPS))
+    writer.write_record(json_tree, schema.resolve_record(record_def))
+    assert_rdf_isomorphic(expected_model, actual_model)
+
+
+def test_rdf_to_json_with_bare_ids():
+    """Port of the upstream #79 test (note: the upstream test name says
+    rdf-to-json but exercises the *writer* with bare reference ids)."""
+    schema = _load_schema()
+    expected_model = load_rdf("rdf-records/reference.ttl")
+    actual_model = Graph()
+    json_tree = load_json("rdf-records/reference.bareIds.json")
+    writer = RdfRecordWriter(actual_model, JsonOptions(bare_reference_ids=True))
+    writer.write_record(json_tree, schema.resolve_record("Bar"))
+    assert_rdf_isomorphic(expected_model, actual_model)
+
+
+def test_json_to_rdf_with_bare_ids():
+    """Port of the upstream #79 test (note: the upstream test name says
+    json-to-rdf but exercises the *reader* with bare reference ids)."""
+    schema = _load_schema()
+    model = load_rdf("rdf-records/reference.ttl")
+    expected_json = load_json("rdf-records/reference.bareIds.json")
+    reader = RdfRecordReader(model, schema, JsonOptions(bare_reference_ids=True))
+    actual_json = reader.read_value(URIRef("http://example.org/test"), schema.resolve_record("Bar"))
+    assert normalize(actual_json) == normalize(expected_json), (
+        f"Read record does not match rdf-records/reference.bareIds.json.\n"
+        f"actual: {actual_json}\nexpected: {expected_json}"
+    )
+
 
 def _load_schema():
     with open(resource_path("rdf-records/schema.yaml")) as f:

@@ -1,0 +1,5 @@
+{
+  "myId": "http://example.org/test",
+  "myType": "http://example.org/def/Bar",
+  "referenceFoo": {"myId": "http://example.org/foo" }
+}

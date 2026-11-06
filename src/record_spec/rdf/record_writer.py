@@ -96,11 +96,11 @@ class RdfRecordWriter:
         elif (
             isinstance(value, dict)
             and value_property in value
-            and "@type" in value
-            and isinstance(value["@type"], str)
-            and prop.accepts(value["@type"])
+            and self.options.type_property in value
+            and isinstance(value[self.options.type_property], str)
+            and prop.accepts(value[self.options.type_property])
         ):
-            literal = _create_literal(str(value[value_property]), value["@type"])
+            literal = _create_literal(str(value[value_property]), value[self.options.type_property])
         elif (
             isinstance(value, dict)
             and value_property in value

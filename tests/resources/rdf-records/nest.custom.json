@@ -1,0 +1,9 @@
+{
+  "myId": "http://example.org/test",
+  "myType": "http://example.org/def/Bar",
+  "nestedFoo": {
+    "myId": "http://example.org/foo",
+    "myType": "http://example.org/def/Foo",
+    "stringProp": "Foo"
+  }
+}

@@ -14,6 +14,7 @@ from record_spec.exceptions import (
     RdfRecordReaderException,
     RecordNotFoundException,
 )
+from record_spec.jsonschema import JsonOptions
 from record_spec.model.constraints import RecordConstraint
 from record_spec.model.property import LiteralProperty, Property, RecordProperty
 from record_spec.values.datatypes import RDF_LANG_STRING, XSD
@@ -48,11 +49,20 @@ class RdfRecordReader:
     :param graph: The RDF graph to read from.
     :param record_resolver: The resolver used to look up record definitions
         by class URI when a nested resource's type must be inferred.
+    :param json_options: The JSON property-name options honoured when
+        building the tree (id/type/value/language properties,
+        bare reference ids). Defaults to :class:`JsonOptions` (#79 upstream).
     """
 
-    def __init__(self, graph: Graph, record_resolver: RecordResolver):
+    def __init__(
+        self,
+        graph: Graph,
+        record_resolver: RecordResolver,
+        json_options: JsonOptions | None = None,
+    ):
         self.graph = graph
         self.record_resolver = record_resolver
+        self.options = json_options if json_options is not None else JsonOptions()
 
     def read_value(self, resource: Node, record: Record) -> dict[str, Any]:
         """Read an RDF resource as an instance of the specified record
@@ -65,8 +75,8 @@ class RdfRecordReader:
         """
         result: dict[str, Any] = {}
         if isinstance(resource, URIRef):
-            result["@id"] = str(resource)
-        result["@type"] = record.class_uri
+            result[self.options.id_property] = str(resource)
+        result[self.options.type_property] = record.class_uri
         for prop in record.effective_properties:
             value = self._read_property_value(resource, prop)
             if value is not None:
@@ -128,8 +138,7 @@ class RdfRecordReader:
             None,
         )
 
-    @staticmethod
-    def _make_literal_value(literal: Literal) -> Any:
+    def _make_literal_value(self, literal: Literal) -> Any:
         datatype = _datatype_uri(literal)
         if datatype == XSD + "string":
             return str(literal)
@@ -141,16 +150,16 @@ class RdfRecordReader:
             return float(str(literal))
         if datatype == XSD + "boolean":
             return str(literal).strip().lower() == "true" or str(literal).strip() == "1"
-        result: dict[str, Any] = {"@value": str(literal)}
+        result: dict[str, Any] = {self.options.value_property: str(literal)}
         if literal.language is not None and str(literal.language):
-            result["@language"] = str(literal.language)
+            result[self.options.language_property] = str(literal.language)
         else:
-            result["@type"] = datatype
+            result[self.options.type_property] = datatype
         return result
 
     def _make_record_value(
         self, resource: Node, prop: RecordProperty, constraint: RecordConstraint | None
-    ) -> dict[str, Any] | None:
+    ) -> dict[str, Any] | str | None:
         if prop.nested:
             if constraint is not None:
                 return self.read_value(resource, constraint.record)
@@ -170,7 +179,10 @@ class RdfRecordReader:
                     "which does not map to any known record definition."
                 ) from None
             return self.read_value(resource, record)
-        return {"@id": str(resource)}
+        if self.options.bare_reference_ids:
+            # Interpret the value as the referenced record's IRI directly
+            return str(resource)
+        return {self.options.id_property: str(resource)}
 
     def _wrap_property_value(self, prop: Property, json_values: list[Any]) -> Any:
         if prop.repeatable:
