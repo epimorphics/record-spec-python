@@ -58,7 +58,9 @@ class CuriResolverImpl(CuriResolver):
             return curi
         if self._base_uri is not None:
             return urljoin(self._base_uri, curi)
-        raise UriResolutionException(f"URI {curi} is a relative URI and there is no in-scope base URI to resolve against.")
+        raise UriResolutionException(
+            f"URI {curi} is a relative URI and there is no in-scope base URI to resolve against."
+        )
 
     def compact(self, uri: str) -> str:
         split_at = max(uri.rfind("#"), uri.rfind("/"))

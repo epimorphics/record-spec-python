@@ -253,7 +253,9 @@ class Schema(Documentable, CuriResolver, EventListener, Extensible, RecordResolv
             return curi
         if self.base_uri is not None:
             return urljoin(self.base_uri, curi)
-        raise UriResolutionException(f"URI {curi} is a relative URI and there is no in-scope base URI to resolve against.")
+        raise UriResolutionException(
+            f"URI {curi} is a relative URI and there is no in-scope base URI to resolve against."
+        )
 
     def compact(self, uri: str) -> str:
         """Compact a full IRI into a CURI or relative reference where possible."""
