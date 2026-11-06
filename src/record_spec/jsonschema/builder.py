@@ -132,9 +132,8 @@ class JsonSchemaBuilder:
         ]
         if self.options.optional_type_property:
             return required_properties
-        # NOTE: mirrors the Kotlin original, which hard-codes "@type" here even
-        # when options.typeProperty is customized (see quirks ticket).
-        return list(dict.fromkeys(required_properties + ["@type"]))
+        # The required type property follows options.type_property (#66 upstream).
+        return list(dict.fromkeys(required_properties + [self.options.type_property]))
 
     def build_property(self, prop: Property) -> JsonSchema:
         if isinstance(prop, LiteralProperty):
@@ -153,7 +152,7 @@ class JsonSchemaBuilder:
         elif len(json_literal_schemas) == 1:
             if typed_literal:
                 first = json_literal_schemas[0]
-                value_schema = first.properties.get("@value") if first.properties else None
+                value_schema = first.properties.get(self.options.value_property) if first.properties else None
                 pattern = value_schema.pattern if value_schema is not None else None
                 schema = AnyOf([first, StringSchema(pattern=pattern)])
             else:

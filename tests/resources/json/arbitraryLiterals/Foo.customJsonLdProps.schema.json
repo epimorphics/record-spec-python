@@ -1,0 +1,125 @@
+{
+  "$id": "http://example.org/spec/Foo",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/spec:Foo",
+  "definitions": {
+    "spec:Foo": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        },
+        "myType": {
+          "type": "string",
+          "enum": [
+            "http://example.org/def/Foo"
+          ]
+        },
+        "unmappedDatatype": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "myValue": {
+                  "type": "string"
+                },
+                "myType": {
+                  "type": "string",
+                  "enum": [
+                    "http://example.org/def/myDatatype"
+                  ]
+                }
+              },
+              "required": [
+                "myValue",
+                "myType"
+              ]
+            },
+            {
+              "type": "string"
+            }
+          ]
+        },
+        "multipleUnmappedDatatypes": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "myValue": {
+                  "type": "string"
+                },
+                "myType": {
+                  "type": "string",
+                  "enum": [
+                    "http://example.org/def/myDatatype"
+                  ]
+                }
+              },
+              "required": [
+                "myValue",
+                "myType"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "myValue": {
+                  "type": "string"
+                },
+                "myType": {
+                  "type": "string",
+                  "enum": [
+                    "http://example.org/def/myOtherDatatype"
+                  ]
+                }
+              },
+              "required": [
+                "myValue",
+                "myType"
+              ]
+            }
+          ]
+        },
+        "unmappedDatatypeWithPattern": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "myValue": {
+                  "type": "string",
+                  "pattern": "foo|bar"
+                },
+                "myType": {
+                  "type": "string",
+                  "enum": [
+                    "http://example.org/def/myDatatype"
+                  ]
+                }
+              },
+              "required": [
+                "myValue",
+                "myType"
+              ]
+            },
+            {
+              "type": "string",
+              "pattern": "foo|bar"
+            }
+          ]
+        }
+      },
+      "required": ["myType"]
+    },
+    "_ref": {
+      "type": "object",
+      "properties": {
+        "@id": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "@id"
+      ]
+    }
+  }
+}
