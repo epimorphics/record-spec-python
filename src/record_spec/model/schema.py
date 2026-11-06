@@ -9,7 +9,6 @@ from urllib.parse import urljoin, urlsplit
 from record_spec.convert import MixinAdapter, RecordAdapter, SchemaAdapter
 from record_spec.exceptions import (
     MixinExistsException,
-    UriResolutionException,
     MixinNotFoundException,
     MixinReferencedException,
     RecordClassUriClashException,
@@ -18,6 +17,7 @@ from record_spec.exceptions import (
     RecordReferencedException,
     RecordShortCodeClashException,
     SchemaValidationException,
+    UriResolutionException,
 )
 from record_spec.model.events import Event, EventListener, RecordModifiedEvent
 from record_spec.values.curi_resolver import CuriResolver

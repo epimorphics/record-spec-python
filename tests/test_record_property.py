@@ -2,11 +2,11 @@
 
 from __future__ import annotations
 
+from helpers import TestListener
+
 from record_spec.model import Schema
 from record_spec.model.events import PropertyModifiedEvent
 from record_spec.model.property import RecordProperty
-
-from helpers import TestListener
 
 
 def _make_schema():

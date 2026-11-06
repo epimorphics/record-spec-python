@@ -8,14 +8,14 @@ from record_spec.convert import PropertyAdapter, RecordAdapter
 from record_spec.exceptions import (
     CircularInheritanceException,
     IncompatiblePropertyException,
-    PropertyUriExistsException,
-    ShortCodeExistsException,
     InvalidRecordException,
     InvalidShortCodeException,
     MixinExistsException,
     MixinNotFoundException,
     MixinPropertyClashException,
+    PropertyUriExistsException,
     RecordSpecException,
+    ShortCodeExistsException,
 )
 from record_spec.model.events import (
     Event,
@@ -206,11 +206,13 @@ class Record(Documentable, Extensible, EventListener, EventSourceMixin, Property
     def add_mixin(self, mixin_id: str) -> None:
         """Add a mixin to the list of mixins defined on this record.
 
+        If a mixin with the specified ID already exists in the list of mixins
+        defined on this record, then this method will not modify the record.
+
+        Invalid mixin references are only validated by a call to
+        :meth:`Schema.validate` (#63 upstream).
+
         :param mixin_id: The short-code or IRI identifier of the mixin to add.
-        :raises MixinExistsException: if the record already has a mixin with an
-            ID or short-code that matches ``mixin_id``.
-        :raises MixinNotFoundException: if no mixin with the specified ID or
-            short-code could be found in the parent schema.
         """
         self._mixins[mixin_id] = None
         self._on_changed()

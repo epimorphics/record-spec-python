@@ -24,6 +24,22 @@ def test_add_empty_mixin():
     assert len(list(record.mixins)) == 1
 
 
+def test_schema_validation_throws_if_mixin_does_not_exist():
+    """Port of the upstream #63 change: invalid mixin references are only
+    validated by Schema.validate()."""
+    from record_spec.exceptions import InvalidRecordException, MixinNotFoundException, SchemaValidationException
+
+    schema = Schema()
+    record = schema.create_record("http://example.org/record/foo", "http://example.org/def/Foo", "Foo")
+    record.add_mixin("http://example.org/mixin/bar")
+    with pytest.raises(SchemaValidationException) as exc_info:
+        schema.validate()
+    assert len(exc_info.value.validation_errors) == 1
+    invalid_record = exc_info.value.validation_errors[0]
+    assert isinstance(invalid_record, InvalidRecordException)
+    assert isinstance(invalid_record.cause, MixinNotFoundException)
+
+
 def test_add_mixin_has_no_effect_if_mixin_already_added():
     schema = Schema()
     record = schema.create_record("http://example.org/record/foo", "http://example.org/def/Foo", "Foo")
