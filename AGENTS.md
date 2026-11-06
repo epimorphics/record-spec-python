@@ -11,3 +11,7 @@ The five canonical triage roles are used as-is (label string = role name). See `
 ### Domain docs
 
 Single-context: one `GLOSSARY.md` and `docs/adr/` at the repo root. See `docs/agents/domain.md`.
+
+### Parity process
+
+This implementation mirrors the Kotlin `record-spec` upstream (mirror-first policy, ADR-0001). Before changing behaviour or syncing an upstream change, follow `docs/agents/parity.md`.

@@ -1,0 +1,21 @@
+base: http://test.epimorphics.com/record-spec/mixins01.yaml
+prefixes:
+  - prefix: d
+    uri: http://test.epimorphics.com/record-spec/def/
+  - prefix: xsd
+    uri: http://www.w3.org/2001/XMLSchema#
+  - prefix: rdfs
+    uri: http://www.w3.org/2000/01/rdf-schema#
+records:
+  RecordA:
+    classUri: d:A
+    extends: RecordC
+    shortCode: RecordA
+  RecordB:
+    classUri: d:B
+    extends: RecordA
+    shortCode: RecordB
+  RecordC:
+    classUri: d:C
+    extends: RecordB
+    shortCode: RecordC

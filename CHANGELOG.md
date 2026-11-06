@@ -23,6 +23,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - extension records SPI (entry points + programmatic providers)
   - `record-spec` CLI: validate, convert, generate, json-schema, json-ld,
     shacl, rdfs, rdfmapper
+  - Upstream parity process: mirror-first policy (ADR-0001), the sync
+    checklist (`docs/agents/parity.md`), a weekly parity-watch workflow
+    that fails on fixture drift against the Kotlin upstream, and a full
+    byte-for-byte mirror of the upstream library test-resources tree
 
 ### Fixed (parity with upstream record-spec, Nov 2026)
 

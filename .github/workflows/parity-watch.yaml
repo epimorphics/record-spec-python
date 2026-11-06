@@ -1,0 +1,54 @@
+name: Parity watch
+on:
+  schedule:
+    # Mondays 07:00 UTC
+    - cron: "0 7 * * 1"
+  workflow_dispatch:
+
+jobs:
+  parity:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Clone the Kotlin upstream
+        run: git clone --depth 50 https://github.com/epimorphics/record-spec.git upstream-record-spec
+
+      - name: Report upstream commits since the last synced marker
+        run: |
+          MARKER=$(cat .parity-upstream-sha)
+          cd upstream-record-spec
+          if git cat-file -e "$MARKER" 2>/dev/null; then
+            echo "Upstream commits since $MARKER:"
+            git log --oneline "$MARKER"..HEAD
+          else
+            echo "::warning::Marker $MARKER is not present in the shallow clone; showing the last 20 upstream commits."
+            git log --oneline -20
+          fi
+
+      - name: Diff the mirrored fixture tree
+        run: |
+          set -o pipefail
+          UP=upstream-record-spec/record-spec-lib/src/test/resources
+          python3 - "$UP" <<'EOF'
+          import os, sys, filecmp
+          up, ours = sys.argv[1], "tests/resources"
+          up_files = {os.path.relpath(os.path.join(r, f), up)
+                      for r, d, fs in os.walk(up) if "/META-INF" not in r
+                      for f in fs}
+          our_files = {os.path.relpath(os.path.join(r, f), ours)
+                       for r, d, fs in os.walk(ours) for f in fs}
+          missing, extra = sorted(up_files - our_files), sorted(our_files - up_files)
+          diffs = [f for f in sorted(up_files & our_files)
+                   if not filecmp.cmp(os.path.join(up, f), os.path.join(ours, f), shallow=False)]
+          print("MISSING (upstream, not mirrored):")
+          for f in missing: print("  -", f)
+          print("EXTRA (mirrored, not upstream):")
+          for f in extra: print("  -", f)
+          print("BYTE DIFFS:")
+          for f in diffs: print("  -", f)
+          if missing or extra or diffs:
+              print("\nFixture drift detected: port the upstream change per docs/agents/parity.md")
+              sys.exit(1)
+          print(f"\nFixture tree in sync ({len(up_files)} files).")
+          EOF
