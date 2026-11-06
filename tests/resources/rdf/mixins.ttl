@@ -2,6 +2,8 @@
 @prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
 @prefix spec: <http://example.org/spec/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
 
 
 spec:schema a rec:Schema ;
@@ -21,8 +23,14 @@ spec:Foo a rec:Record ;
 .
 
 spec:MixinA a rec:Mixin ;
+  rdfs:label "Mixin A"@en ;
+  rdfs:comment "A mixin that adds a label and a reference to Foo."@en ;
+  dct:description "A mixin that adds a label and a reference to Foo."@en ;
   rec:property [
     a rec:LiteralProperty ;
+    rdfs:label "Label Property"@en ;
+    rdfs:comment "A label property that is a literal string."@en ;
+    dct:description "A label property that is a literal string."@en ;
     rec:shortCode "label" ;
     rec:uri ex:label ;
     rec:required false ;

@@ -41,7 +41,6 @@ def test_add_constraint_notifies_change():
 
 def test_remove_constraint_remove_by_index_raises_event_and_removes_item():
     schema = _make_schema()
-    foo = schema.resolve_record("http://example.org/rec/Foo")
     bar = schema.resolve_record("http://example.org/rec/Bar")
     rec = RecordProperty(schema, "foo", "https://schema.org/foo")
     rec.add_constraint("http://example.org/rec/Foo")
@@ -66,7 +65,6 @@ def test_remove_constraint_remove_by_index_raises_event_and_removes_item():
 
 def test_remove_constraint_remove_by_instance_raises_event_and_removes_item():
     schema = _make_schema()
-    foo = schema.resolve_record("http://example.org/rec/Foo")
     bar = schema.resolve_record("http://example.org/rec/Bar")
     rec = RecordProperty(schema, "foo", "https://schema.org/foo")
     rec.add_constraint("http://example.org/rec/Foo")

@@ -15,6 +15,9 @@ from record_spec.values.curi_resolver import CuriResolverImpl
 from record_spec.values.datatypes import XSD
 
 from .vocab import (
+    DCT_DESCRIPTION,
+    RDFS_COMMENT,
+    RDFS_LABEL,
     REC_CONSTRAINT,
     REC_DATATYPE,
     REC_EXTENDS,
@@ -134,11 +137,9 @@ class RdfBuilder:
         self._add(record_resource, URIRef(RDF.type), URIRef(REC_RECORD))
         self._add(record_resource, URIRef(REC_URI), URIRef(record_adapter.class_uri))
         self._add(record_resource, URIRef(REC_SHORT_CODE), Literal(record_adapter.short_code))
-        # NOTE: the Kotlin RdfBuilder.addLangStrings creates the label/comment/
-        # description statements but never adds them to the model, so
-        # documentation is not serialized to RDF. That behaviour is mirrored
-        # here: no rdfs:label / rdfs:comment / dct:description triples are
-        # emitted. See issues/01-review-kotlin-quirks.md (quirk 8).
+        self._add_lang_strings(record_adapter.label, RDFS_LABEL, record_resource)
+        self._add_lang_strings(record_adapter.summary, RDFS_COMMENT, record_resource)
+        self._add_lang_strings(record_adapter.description, DCT_DESCRIPTION, record_resource)
         if record_adapter.extends is not None:
             self._add(record_resource, URIRef(REC_EXTENDS), URIRef(curi_resolver.resolve(record_adapter.extends)))
         for mixin_id in record_adapter.mixins:
@@ -153,7 +154,9 @@ class RdfBuilder:
         mixin_resource = URIRef(mixin_adapter.id)
         self._add(schema, URIRef(REC_MIXIN), mixin_resource)
         self._add(mixin_resource, URIRef(RDF.type), URIRef(REC_MIXIN_CLASS))
-        # NOTE: documentation triples are not serialized (see _build_record).
+        self._add_lang_strings(mixin_adapter.label, RDFS_LABEL, mixin_resource)
+        self._add_lang_strings(mixin_adapter.summary, RDFS_COMMENT, mixin_resource)
+        self._add_lang_strings(mixin_adapter.description, DCT_DESCRIPTION, mixin_resource)
         for property_adapter in mixin_adapter.properties:
             property_resource = self._build_property(property_adapter, curi_resolver)
             self._add(mixin_resource, URIRef(REC_PROPERTY), property_resource)
@@ -177,6 +180,9 @@ class RdfBuilder:
                 self._add(property_resource, URIRef(REC_REVERSED), Literal(True))
             if property_adapter.nested:
                 self._add(property_resource, URIRef(REC_NESTED), Literal(True))
+        self._add_lang_strings(property_adapter.label, RDFS_LABEL, property_resource)
+        self._add_lang_strings(property_adapter.summary, RDFS_COMMENT, property_resource)
+        self._add_lang_strings(property_adapter.description, DCT_DESCRIPTION, property_resource)
         constraints = (
             [self._build_literal_constraint(c) for c in property_adapter.literal_constraints]
             if property_adapter.kind == PropertyKind.LITERAL
@@ -252,7 +258,16 @@ class RdfBuilder:
         self.graph.add((subject, predicate, obj))
 
     def _add_lang_strings(self, lang_strings: Iterable[LangString], predicate_uri: str, subject: Node) -> None:
-        """Mirrors the Kotlin ``addLangStrings``, which creates the statements
-        without adding them to the model: no triples are emitted."""
-        for _lang_string in lang_strings:
-            pass  # statement created but not added, as in the Kotlin original
+        """Add label/summary/description language-tagged strings to a subject.
+
+        A plain literal is created for language-less values and a language
+        literal otherwise, mirroring the upstream fix for issue #64 (the
+        original created the statements without ever adding them to the
+        model, so documentation was never serialized to RDF).
+        """
+        for lang_string in lang_strings:
+            if lang_string.language is None:
+                literal = Literal(lang_string.value)
+            else:
+                literal = Literal(lang_string.value, lang=lang_string.language)
+            self._add(subject, URIRef(predicate_uri), literal)

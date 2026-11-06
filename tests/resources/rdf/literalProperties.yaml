@@ -10,8 +10,26 @@ records:
   spec:Foo:
     classUri: ex:Foo
     shortCode: Foo
+    label:
+      - value: Foo Record
+        language: en
+    summary:
+      - value: A record with various literal properties for testing purposes.
+        language: en
+    description:
+      - value: A record with various literal properties for testing purposes.
+        language: en
     properties:
       string:
+        label:
+          - value: String Property
+            language: en
+        summary:
+          - value: A string property with a pattern constraint.
+            language: en
+        description:
+          - value: A string property with a pattern constraint that allows only strings starting with 'f' followed by zero or more 'o' characters.
+            language: en
         kind: literal
         propertyUri: ex:string
         required: true

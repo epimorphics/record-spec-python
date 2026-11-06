@@ -20,8 +20,26 @@ records:
       - spec:MixinB
 mixins:
   spec:MixinA:
+    label:
+      - value: Mixin A
+        language: en
+    summary:
+      - value: A mixin that adds a label and a reference to Foo.
+        language: en
+    description:
+      - value: A mixin that adds a label and a reference to Foo.
+        language: en
     properties:
       label:
+        label:
+          - value: Label Property
+            language: en
+        summary:
+            - value: A label property that is a literal string.
+              language: en
+        description:
+            - value: A label property that is a literal string.
+              language: en
         kind: literal
         propertyUri: ex:label
         required: false

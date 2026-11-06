@@ -2,6 +2,8 @@
 @prefix rec: <http://vocab.epimorphics.com/record-spec/def/> .
 @prefix spec: <http://example.org/spec/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dct: <http://purl.org/dc/terms/> .
 
 
 spec:schema a rec:Schema ;
@@ -14,10 +16,16 @@ spec:schema a rec:Schema ;
 .
 
 spec:Foo a rec:Record ;
+  rdfs:label "Foo Record"@en ;
+  rdfs:comment "A record with various literal properties for testing purposes."@en ;
+  dct:description "A record with various literal properties for testing purposes."@en ;
   rec:uri ex:Foo ;
   rec:shortCode "Foo" ;
   rec:property [
       a rec:LiteralProperty ;
+      rdfs:label "String Property"@en ;
+      rdfs:comment "A string property with a pattern constraint."@en ;
+      dct:description "A string property with a pattern constraint that allows only strings starting with 'f' followed by zero or more 'o' characters."@en ;
       rec:uri ex:string ;
       rec:shortCode "string" ;
       rec:required true ;
