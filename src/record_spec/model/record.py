@@ -108,6 +108,10 @@ class Record(Documentable, Extensible, EventListener, EventSourceMixin, Property
             clone_property(clone, prop)
         for ext in self._extensions:
             clone.add_extension_record(ext.clone())
+        # Documentation is copied by clone (#58 upstream).
+        clone.label.extend(LangString(ls.value, ls.language) for ls in self.label)
+        clone.summary.extend(LangString(ls.value, ls.language) for ls in self.summary)
+        clone.description.extend(LangString(ls.value, ls.language) for ls in self.description)
         return clone
 
     def set_parent(self, super_class_ref: str | None) -> None:

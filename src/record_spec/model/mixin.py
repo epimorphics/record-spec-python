@@ -123,6 +123,10 @@ class Mixin(Documentable, Extensible, EventListener, EventSourceMixin, PropertyF
         ret = schema.create_mixin(self.id)
         for prop in self.properties:
             clone_property(ret, prop)
+        # Documentation is copied by clone (#58 upstream).
+        ret.label.extend(LangString(ls.value, ls.language) for ls in self.label)
+        ret.summary.extend(LangString(ls.value, ls.language) for ls in self.summary)
+        ret.description.extend(LangString(ls.value, ls.language) for ls in self.description)
         return ret
 
     def validate(self) -> None:

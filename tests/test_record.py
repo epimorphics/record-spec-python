@@ -129,6 +129,42 @@ def test_parent_record_mixins_extend_effective_properties():
     assert any(p.short_code == "label" for p in props)
 
 
+def test_clone_copies_documentation():
+    """Port of the Kotlin #58 regression test: record, mixin and property
+    documentation survives a clone."""
+    from record_spec.model import LangString
+
+    schema = Schema()
+    record = schema.create_record("http://example.org/record/foo", "http://example.org/def/Foo", "Foo")
+    record.label.append(LangString("Foo Record", "en"))
+    record.summary.append(LangString("Foo Summary", "en"))
+    record.description.append(LangString("Foo Description", "en"))
+    label = record.create_literal_property("label", "http://example.org/def/label")
+    label.label.append(LangString("label Label", "en"))
+    label.summary.append(LangString("label Summary", "en"))
+    label.description.append(LangString("label Description", "en"))
+    ref = record.create_record_property("ref", "http://example.org/def/ref")
+    ref.label.append(LangString("ref Label", "en"))
+    ref.summary.append(LangString("ref Summary", "en"))
+    ref.description.append(LangString("ref Description", "en"))
+
+    target_schema = Schema()
+    target_record = record.clone(target_schema)
+    assert target_record.label[0] == LangString("Foo Record", "en")
+    assert target_record.summary[0] == LangString("Foo Summary", "en")
+    assert target_record.description[0] == LangString("Foo Description", "en")
+    target_prop = target_record.get_property("label")
+    assert target_prop is not None
+    assert target_prop.label[0] == LangString("label Label", "en")
+    assert target_prop.summary[0] == LangString("label Summary", "en")
+    assert target_prop.description[0] == LangString("label Description", "en")
+    target_ref = target_record.get_property("ref")
+    assert target_ref is not None
+    assert target_ref.label[0] == LangString("ref Label", "en")
+    assert target_ref.summary[0] == LangString("ref Summary", "en")
+    assert target_ref.description[0] == LangString("ref Description", "en")
+
+
 def test_all_parents_and_descendents():
     schema = Schema()
     base = schema.create_record("http://example.org/record/Base", "http://example.org/def/Base", "Base")

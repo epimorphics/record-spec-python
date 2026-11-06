@@ -459,6 +459,7 @@ def clone_property(property_factory: PropertyFactory, prop: Property) -> None:
                 constraint.max_exclusive,
                 constraint.in_,
             )
+        _copy_documentation(prop, clone)
     else:
         assert isinstance(prop, RecordProperty)
         clone_rec = property_factory.create_record_property(
@@ -472,3 +473,13 @@ def clone_property(property_factory: PropertyFactory, prop: Property) -> None:
         )
         for rec_constraint in prop.constraints:
             clone_rec.add_constraint(rec_constraint.record_ref, rec_constraint.in_)
+        _copy_documentation(prop, clone_rec)
+
+
+def _copy_documentation(source: Property, target: Property) -> None:
+    """Copy label/summary/description from one property to another (#58 upstream)."""
+    from .values import LangString
+
+    target.label.extend(LangString(ls.value, ls.language) for ls in source.label)
+    target.summary.extend(LangString(ls.value, ls.language) for ls in source.summary)
+    target.description.extend(LangString(ls.value, ls.language) for ls in source.description)

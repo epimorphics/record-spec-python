@@ -74,3 +74,19 @@ def test_remove_property_by_instance():
     p.add_constraint(XSD + "string")
     mixin.remove_property(p)
     assert len(list(mixin.properties)) == 0
+
+
+def test_clone_clones_documentation():
+    """Port of the Kotlin #58 regression test: mixin documentation survives a clone."""
+    from record_spec.model import LangString
+
+    schema = Schema()
+    mixin = schema.create_mixin("http://example.org/mixinA")
+    mixin.label.append(LangString("mixin Label", "en"))
+    mixin.summary.append(LangString("mixin Summary", "en"))
+    mixin.description.append(LangString("mixin Description", "en"))
+    target_schema = Schema()
+    target_mixin = mixin.clone(target_schema)
+    assert target_mixin.label[0] == LangString("mixin Label", "en")
+    assert target_mixin.summary[0] == LangString("mixin Summary", "en")
+    assert target_mixin.description[0] == LangString("mixin Description", "en")

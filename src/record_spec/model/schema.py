@@ -308,11 +308,12 @@ class Schema(Documentable, CuriResolver, EventListener, Extensible, RecordResolv
     def clone(self) -> Schema:
         """Create a new :class:`Schema` that is a copy of this instance."""
         ret = Schema()
+        # NOTE: schema-level documentation is NOT copied by clone, mirroring
+        # the upstream Kotlin Schema.clone() (only base URI, imports, prefix
+        # mappings, mixins, records and extensions are copied). Record,
+        # mixin and property documentation IS preserved via their clones.
         ret.base_uri = self.base_uri
         ret.identifier = self.identifier
-        ret.label = list(self.label)
-        ret.summary = list(self.summary)
-        ret.description = list(self.description)
         for import_url in self.imports:
             ret.add_import(import_url)
         ret._add_prefix_mappings(self.prefix_mappings)
