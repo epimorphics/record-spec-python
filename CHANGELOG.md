@@ -22,11 +22,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
     `CatalogResolver`)
   - extension records SPI (entry points + programmatic providers)
   - `record-spec` CLI: validate, convert, generate, json-schema, json-ld,
-    shacl, rdfs, rdfmapper
+    shacl, rdfs, rdfmapper, model-spec
   - Upstream parity process: mirror-first policy (ADR-0001), the sync
     checklist (`docs/agents/parity.md`), a weekly parity-watch workflow
     that fails on fixture drift against the Kotlin upstream, and a full
     byte-for-byte mirror of the upstream library test-resources tree
+- Added a new `model-spec` command to the `record-spec` CLI that converts a
+  record-spec schema into a
+  [model-spec](https://github.com/epimorphics/model-spec) definition (YAML),
+  backed by a new `record_spec.modelspec` package (#81). This ports the
+  record-spec conversion from the model-spec repository so that generating
+  model-spec output from record-spec is owned by record-spec itself. Mixin
+  definitions are omitted by default; `--include-mixins` emits them as
+  classes and as super-classes. Each class includes a synthetic rdf:type
+  property named `@type`, configurable via `--type-property`.
 
 ### Fixed (parity with upstream record-spec, Nov 2026)
 

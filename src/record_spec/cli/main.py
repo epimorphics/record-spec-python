@@ -9,6 +9,7 @@ from record_spec.cli.commands.generate import generate
 from record_spec.cli.commands.json_ld import json_ld
 from record_spec.cli.commands.json_schema import json_schema
 from record_spec.cli.commands.mapper import rdf_mapper
+from record_spec.cli.commands.model_spec import model_spec
 from record_spec.cli.commands.rdfs import rdfs
 from record_spec.cli.commands.shacl import shacl
 from record_spec.cli.commands.validate import validate
@@ -27,6 +28,7 @@ record_spec.add_command(json_ld)
 record_spec.add_command(shacl)
 record_spec.add_command(rdfs)
 record_spec.add_command(rdf_mapper)
+record_spec.add_command(model_spec)
 
 
 def main() -> None:

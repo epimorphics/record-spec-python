@@ -1,0 +1,187 @@
+identifier: "http://vocab.epimorphics.com/agora/def/catalog"
+base: "http://vocab.epimorphics.com/agora/def/"
+description:
+  - value: "A subset of the Agora Catalog data model, adapted for testing purposes."
+    language: "en"
+prefixes:
+  - prefix: "xsd"
+    uri: "http://www.w3.org/2001/XMLSchema#"
+  - prefix: "rdfs"
+    uri: "http://www.w3.org/2000/01/rdf-schema#"
+  - prefix: "c"
+    uri: "http://vocab.epimorphics.com/agora/def/catalog/"
+  - prefix: "rdf"
+    uri: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  - prefix: "u"
+    uri: "http://vocab.epimorphics.com/agora/def/upper/"
+mixins:
+  WithPublicationData:
+    label:
+      - value: "Published thing"
+        language: "en"
+    description:
+      - value: "WithPublicationData: a mix-in class for attributing publication data to some (published) thing."
+        language: "en"
+    properties:
+      contributor:
+        kind: "object"
+        propertyUri: "u:contributor"
+        label:
+          - value: "contributor"
+            language: "en"
+        description:
+          - value: "Zero or more contributors to a publication"
+            language: "en"
+        required: false
+        repeatable: true
+        nested: false
+        constraints:
+          - record: "Agent"
+      published:
+        kind: "literal"
+        propertyUri: "u:published"
+        label:
+          - value: "published"
+            language: "en"
+        description:
+          - value: "Date or date time of publication."
+        required: false
+        repeatable: false
+        constraints:
+          - datatype: "xsd:date"
+          - datatype: "xsd:dateTime"
+records:
+  Thing:
+    classUri: "u:Thing"
+    shortCode: "Thing"
+    label:
+      - value: "Thing"
+        language: "en"
+    properties:
+      description:
+        kind: "literal"
+        propertyUri: "u:description"
+        label:
+          - value: "description"
+            language: "en"
+        description:
+          - value: "A (long) description of something, this may extend over several sentences or paragraphs."
+            language: "en"
+        required: false
+        repeatable: true
+        constraints:
+          - datatype: "xsd:string"
+          - datatype: "rdf:langString"
+      prefLabel:
+        kind: "literal"
+        propertyUri: "u:prefLabel"
+        label:
+          - value: "pref label"
+            language: "en"
+        description:
+          - value: "multi-lingual preferred label"
+            language: "en"
+        required: true
+        repeatable: false
+        constraints:
+          - datatype: "rdf:langString"
+  Agent:
+    classUri: "u:Agent"
+    shortCode: "Agent"
+    label:
+      - value: "Agent"
+        language: "en"
+    description:
+      - value: "An agent (eg. person, group, software or physical artifact)."
+      - value: "Encompasses both human/organisational entities."
+        language: "en"
+    extends: "Thing"
+  CatalogRecord:
+    classUri: "c:CatalogRecord"
+    shortCode: "CatalogRecord"
+    label:
+      - value: "Notice de catalogue"
+        language: "fr"
+      - value: "Catalog record"
+        language: "en"
+    description:
+      - value: "A curated collection of metadata about resources (ref: DCAT)."
+        language: "en"
+    mixins:
+      - "WithPublicationData"
+    properties:
+      primaryTopic:
+        kind: "object"
+        propertyUri: "u:primaryTopic"
+        label:
+          - value: "primary topic"
+            language: "en"
+        description:
+          - value: "Le sujet principal d'un document ou d'un enregistrement descriptif."
+            language: "fr"
+          - value: "The primary topic of some descriptive document or record."
+            language: "en"
+        required: true
+        repeatable: false
+        nested: false
+        constraints:
+          - record: "Dataset"
+  Dataset:
+    classUri: "c:Dataset"
+    shortCode: "Dataset"
+    extends: "Thing"
+    label:
+      - value: "Dataset"
+        language: "en"
+    description:
+      - value: "A collection of data, published or curated by a single agent."
+        language: "en"
+    properties:
+      distribution:
+        kind: "object"
+        propertyUri: "c:distribution"
+        label:
+          - value: "distribution"
+            language: "en"
+        required: false
+        repeatable: true
+        nested: true
+        constraints:
+          - record: "Distribution"
+  Distribution:
+    classUri: "c:Distribution"
+    shortCode: "Distribution"
+    label:
+      - value: "Distribution"
+        language: "en"
+    description:
+      - value: "A specific representation of a dataset."
+      - value: "An accessible or downloadable copy of a dataset or document."
+        language: "en"
+    properties:
+      byteSize:
+        kind: "literal"
+        propertyUri: "c:byteSize"
+        label:
+          - value: "byte size"
+            language: "en"
+        description:
+          - value: "raw (uncompressed) size of a distribution in bytes."
+            language: "en"
+        required: false
+        repeatable: false
+        constraints:
+          - datatype: "xsd:integer"
+      mediaType:
+        kind: "object"
+        propertyUri: "c:mediaType"
+        label:
+          - value: "media type"
+            language: "en"
+        description:
+          - value: "The media type of the distribution as defined by IANA."
+          - value: "The internet media type of a distribution."
+            language: "en"
+        required: true
+        repeatable: false
+        nested: false

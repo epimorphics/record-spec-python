@@ -1,0 +1,175 @@
+---
+prefixes:
+  c: "http://vocab.epimorphics.com/agora/def/catalog/"
+  rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  owl: "http://www.w3.org/2002/07/owl#"
+  u: "http://vocab.epimorphics.com/agora/def/upper/"
+  xsd: "http://www.w3.org/2001/XMLSchema#"
+  rdfs: "http://www.w3.org/2000/01/rdf-schema#"
+  dc: "http://purl.org/dc/elements/1.1/"
+classes:
+- class: "c:CatalogRecord"
+  name: "CatalogRecord"
+  subClassOf: []
+  properties:
+  - prop: "u:contributor"
+    name: "contributor"
+    kind: "object"
+    type: "u:Agent"
+    optional: true
+    multi: true
+    unique: false
+    comment: "Zero or more contributors to a publication"
+  - prop: "u:primaryTopic"
+    name: "primaryTopic"
+    kind: "object"
+    type: "c:Dataset"
+    optional: false
+    multi: false
+    unique: false
+    comment: "The primary topic of some descriptive document or record."
+  - prop: "u:published"
+    name: "published"
+    kind: "datatype"
+    type:
+    - "xsd:date"
+    - "xsd:dateTime"
+    optional: true
+    multi: false
+    unique: false
+    comment: "Date or date time of publication."
+  - prop: "rdf:type"
+    name: "@type"
+    type: "rdfs:Resource"
+    optional: true
+    multi: true
+    unique: false
+  comment: "A curated collection of metadata about resources (ref: DCAT)."
+  polymorphic: false
+- class: "c:Dataset"
+  name: "Dataset"
+  subClassOf: "u:Thing"
+  properties:
+  - prop: "c:distribution"
+    name: "distribution"
+    kind: "object"
+    type: "c:Distribution"
+    optional: true
+    multi: true
+    unique: false
+  - prop: "u:description"
+    name: "description"
+    kind: "datatype"
+    type:
+    - "xsd:string"
+    - "rdf:langString"
+    optional: true
+    multi: true
+    unique: false
+    comment: "A (long) description of something, this may extend over several sentences\
+      \ or paragraphs."
+  - prop: "u:prefLabel"
+    name: "prefLabel"
+    kind: "datatype"
+    type: "rdf:langString"
+    optional: false
+    multi: false
+    unique: false
+    comment: "multi-lingual preferred label"
+  - prop: "rdf:type"
+    name: "@type"
+    type: "rdfs:Resource"
+    optional: true
+    multi: true
+    unique: false
+  comment: "A collection of data, published or curated by a single agent."
+  polymorphic: false
+- class: "c:Distribution"
+  name: "Distribution"
+  subClassOf: []
+  properties:
+  - prop: "c:byteSize"
+    name: "byteSize"
+    kind: "datatype"
+    type: "xsd:integer"
+    optional: true
+    multi: false
+    unique: false
+    comment: "raw (uncompressed) size of a distribution in bytes."
+  - prop: "c:mediaType"
+    name: "mediaType"
+    kind: "object"
+    optional: false
+    multi: false
+    unique: false
+    comment: "The internet media type of a distribution."
+  - prop: "rdf:type"
+    name: "@type"
+    type: "rdfs:Resource"
+    optional: true
+    multi: true
+    unique: false
+  comment: "An accessible or downloadable copy of a dataset or document."
+  polymorphic: false
+- class: "u:Agent"
+  name: "Agent"
+  subClassOf: "u:Thing"
+  properties:
+  - prop: "u:description"
+    name: "description"
+    kind: "datatype"
+    type:
+    - "xsd:string"
+    - "rdf:langString"
+    optional: true
+    multi: true
+    unique: false
+    comment: "A (long) description of something, this may extend over several sentences\
+      \ or paragraphs."
+  - prop: "u:prefLabel"
+    name: "prefLabel"
+    kind: "datatype"
+    type: "rdf:langString"
+    optional: false
+    multi: false
+    unique: false
+    comment: "multi-lingual preferred label"
+  - prop: "rdf:type"
+    name: "@type"
+    type: "rdfs:Resource"
+    optional: true
+    multi: true
+    unique: false
+  comment: "Encompasses both human/organisational entities."
+  polymorphic: false
+- class: "u:Thing"
+  name: "Thing"
+  subClassOf: []
+  properties:
+  - prop: "u:description"
+    name: "description"
+    kind: "datatype"
+    type:
+    - "xsd:string"
+    - "rdf:langString"
+    optional: true
+    multi: true
+    unique: false
+    comment: "A (long) description of something, this may extend over several sentences\
+      \ or paragraphs."
+  - prop: "u:prefLabel"
+    name: "prefLabel"
+    kind: "datatype"
+    type: "rdf:langString"
+    optional: false
+    multi: false
+    unique: false
+    comment: "multi-lingual preferred label"
+  - prop: "rdf:type"
+    name: "@type"
+    type: "rdfs:Resource"
+    optional: true
+    multi: true
+    unique: false
+  polymorphic: true
+comment: "A subset of the Agora Catalog data model, adapted for testing purposes."
