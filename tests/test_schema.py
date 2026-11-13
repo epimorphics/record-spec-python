@@ -26,6 +26,7 @@ from record_spec.exceptions import (
     SchemaValidationException,
 )
 from record_spec.model import RecordProperty, Schema
+from record_spec.model.values import LangString
 from record_spec.values import XSD
 
 
@@ -391,3 +392,17 @@ def test_clone_succeeds_when_a_type_is_used_before_declaration():
     assert isinstance(has_bar, RecordProperty)
     assert has_bar.constraints[0].record.short_code == "Bar"
     clone.validate()
+
+def test_clone_clones_documentation():
+    schema = Schema()
+    schema.label.append(LangString("Label", "en"))
+    schema.summary.append(LangString("Summary", "en"))
+    schema.description.append(LangString("Description", "en"))
+    clone = schema.clone()
+    assert len(clone.label) == 1
+    assert clone.label[0].value == "Label"
+    assert len(clone.summary) == 1
+    assert clone.summary[0].value == "Summary"
+    assert len(clone.description) == 1
+    assert clone.description[0].value == "Description"
+    
