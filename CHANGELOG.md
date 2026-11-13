@@ -34,6 +34,8 @@ Each item mirrors the corresponding fix in the upstream Kotlin
 implementation, keeping both implementations in lockstep:
 
 - Documentation properties (label/summary/description) are copied when
+  schemas are cloned for parity with the Kotlin implementation.
+- Documentation properties (label/summary/description) are copied when
   records, mixins and properties are cloned, so import resolution and
   merges no longer lose record-level documentation (#58)
 - `RecordProperty.remove_constraint(index)` allows removing the first
